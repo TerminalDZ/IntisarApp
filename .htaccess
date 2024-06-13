@@ -1,0 +1,13 @@
+# Disable directory browsing
+Options -Indexes
+
+# Deny access to .htaccess and other sensitive files
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|tpl)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

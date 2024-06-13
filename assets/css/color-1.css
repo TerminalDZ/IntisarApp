@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Lalezar&family=Lemonada:wght@300&display=swap');
+
+body {  
+    font-family: "Lemonada", cursive;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 10px;
+}
+  
