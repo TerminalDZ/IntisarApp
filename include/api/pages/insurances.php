@@ -164,9 +164,7 @@
 
         $created_by = $profile['id'];
 
-        if ($insurance_number == '') {
-            $insurance_number = null;
-        }
+     
 
         if ($member_id == '' || $general_command == '' || $amount == '' || $year == '' || $paid == '') {
             echo json_encode(array('status' => 'error', 'message' => 'الرجاء ملئ جميع الحقول'));

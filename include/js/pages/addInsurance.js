@@ -363,6 +363,7 @@ $(document).ready(function() {
                     $('#changeYear').text('تغيير السنة');
                     $('#CerrryYear').show();
                     $('#InputYear').empty();
+                    $('#general_command').val('');
                 }
             }
         });
