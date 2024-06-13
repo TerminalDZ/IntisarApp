@@ -118,7 +118,7 @@
 
         $id = $_POST['id'];
         $insurance_number = $_POST['insuranceNumber'];
-        $general_command = $_POST['general_command'];
+        $general_command = $_POST['GeneralCommand'];
         $amount = $_POST['amount'];
         $year = $_POST['year'];
         if (isset($_POST['paid'])){
@@ -169,6 +169,12 @@
         if ($member_id == '' || $general_command == '' || $amount == '' || $year == '' || $paid == '') {
             echo json_encode(array('status' => 'error', 'message' => 'الرجاء ملئ جميع الحقول'));
             die();
+        }
+
+        if($insurance_number != ''){
+            $general_command == 1;
+        }else{
+            $general_command == 0;
         }
 
         $check = DB::select('insurances', "member_id = '$member_id' AND year = '$year' AND archiv = 0")->fetch_assoc();
@@ -234,6 +240,25 @@
 
         echo json_encode(array('status' => 'success', 'message' => 'تم جلب العضو بنجاح', 'member' => $data, 'amount' => $amount));
 
+    }elseif($action == 'UpdateInsuranceNumber'){
+        $id = $_POST['id'];
+        $insurance_number = $_POST['insuranceNumber'];
+
+        $data = array(
+            'insurance_number' => $insurance_number,
+            'general_command' => 1,
+            'updated_by' => $profile['id'] 
+        );
+
+        $where = "id = '$id'";
+
+        $update = DB::update('insurances', $data, $where);
+
+        if ($update) {
+            echo json_encode(array('status' => 'success', 'message' => 'تم تحديث رقم التأمين بنجاح'));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'حدث خطأ اثناء تحديث رقم التأمين'));
+        }
     }
 
 

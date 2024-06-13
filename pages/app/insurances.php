@@ -86,6 +86,18 @@
 
                 </div>
                 <div class="card-body table-border-style">
+                    <div class="row">
+                       
+                        <div class="col d-none" id="CloseFilter">
+                            <button type="button" class="btn btn-block btn-danger" id="NOFilter"> <span class="fa fa-times"></span> الغاء</button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-primary" id="Filtters"> <span class="fa fa-random"></span> الفلتر</button>
+                        </div>
+
+
+                       
+                    </div>
                     <div class="table-responsive">
                        <table class="table table-bordered table-striped table-hover" id="TableInsurances">
                           <thead>

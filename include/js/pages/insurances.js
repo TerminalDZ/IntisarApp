@@ -166,29 +166,53 @@ $(document).ready(function() {
 
     function updateTable(insurances) {
         table.clear();
-        if(insurances.length == 0){
+        var InsuranceNumber = $('#filterInsuranceNumber').val() || 0;    
+        var PaidStatus = $('#filterPaidStatus').val() || 0;
+
+
+        var filteredInsurances = insurances.filter(insurance => {
+
+            var insuranceNumberCondition = (InsuranceNumber == 0) ||
+                    (InsuranceNumber == 1 && insurance.general_command == 1) ||
+                    (InsuranceNumber == 2 && insurance.general_command == 0);
+
+            var paidStatusCondition = (PaidStatus == 0) ||
+                   (PaidStatus == 1 && insurance.paid == 1) ||
+                   (PaidStatus == 2 && insurance.paid == 0);
+
+            return insuranceNumberCondition && paidStatusCondition;
+
+        });
+
+
+
+        
+        
+        if (filteredInsurances.length == 0) {
             table.draw();
             return;
         }
-
-        insurances.forEach(function(insurance) {
+    
+        filteredInsurances.forEach(function(insurance) {
             var date = new Date(insurance.created_at);
             var formattedDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
             var paidBadge = insurance.paid == 1 ? '<span class="badge badge-success">دافع</span>' : '<span class="badge badge-danger">غير دافع</span>';
             var checked = insurance.paid == 1 ? 'checked' : '';
             var switchCheck = '<input type="checkbox" class="switch-check" data-id="' + insurance.id + '" ' + checked + '>';
+            var insurance_number = insurance.insurance_number == '' ? '<span class="badge badge-danger EditInsuranceNumber" data-id="' + insurance.id + '" style="cursor: pointer;">لا يوجد</span>' : insurance.insurance_number;
             table.row.add([
                 insurance.member_id,
                 insurance.member.first_name + ' ' + insurance.member.last_name,
-                insurance.insurance_number,
+                insurance_number,
                 insurance.year,
                 insurance.amount,
                 switchCheck + paidBadge,
                 formattedDate,
                 '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">العمليات</button> <div class="dropdown-menu"> <a class="dropdown-item editinsurances" data-idE=' + insurance.id + '>تعديل</a> <a class="dropdown-item deleteinsurances" data-idD=' + insurance.id + '>حذف</a> </div></div>'
-
             ]).draw();
         });
+
+
 
        $(document).on('change', '.switch-check', function() {
             var insuranceId = $(this).data('id');
@@ -208,6 +232,156 @@ $(document).ready(function() {
                 }
             });
 
+        });
+    }
+
+
+    //Fillterss
+
+    const ModalFillterss = `
+    <div class="modal fade" id="modalFillterss" tabindex="-1" role="dialog" aria-labelledby="modalFillterssLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="formFillterss">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalFillterssLabel">تصفية البيانات</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-right text-left">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-right">
+                        <div class="form-group row">
+                            <label for="filterInsuranceNumber" class="col-sm-3 col-form-label">المنخرطين المأمنون ؟</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="filterInsuranceNumber" name="filterInsuranceNumber">
+                                    <option value="0">الكل</option>
+                                    <option value="1">المأمنون في قيادة العامة</option>
+                                    <option value="2">غير المأمنون في قيادة العامة</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="filterPaidStatus" class="col-sm-3 col-form-label">حالة الدفع</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="filterPaidStatus" name="filterPaidStatus">
+                                    <option value="0">الكل</option>
+                                    <option value="1">دافعين التأمين</option>
+                                    <option value="2">غير دافعين التأمين</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submitFillterss">تصفية</button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    `;
+
+
+    function Fillterss() {
+        if ($('#modalFillterss').length == 0) {
+            $('body').append(ModalFillterss);
+        }
+        $('#modalFillterss').modal('show');
+
+       
+    }
+
+    $('#Filtters').click(function() {
+        Fillterss();
+        
+    });
+
+
+    $(document).on('change', '#filterInsuranceNumber, #filterPaidStatus', function() {
+        var year = $('#yearInput').val();
+        GetAllinsurances(year);
+    });
+        
+
+
+
+
+    $(document).on('click', '.EditInsuranceNumber', function() {
+        var insuranceId = $(this).attr('data-id');
+        swal({
+            title: "هل تم تأمين في قيادة العامة ؟",
+            buttons: ["لا", "نعم"],
+            dangerMode: true,
+        }).then((willAdd) => {
+            if (willAdd) {
+                AlertAddInsurance(insuranceId);
+            }
+        });
+
+
+        
+    });
+
+    function AlertAddInsurance(insuranceId) {
+        swal({
+            title: "أدخل رقم التأمين", 
+            content: "input",
+            buttons: ["إلغاء", "حفظ"],
+            dangerMode: true,
+        }).then((insuranceNumber) => {
+           
+
+            if (insuranceNumber) {
+                if (insuranceNumber == '' || isNaN(insuranceNumber) || insuranceNumber.length == '') {
+                    $.notify({
+                        title: '<strong></strong>',
+                        message: '<strong>رقم التأمين غير صالح</strong>'
+                        
+                    }, {
+                        type: 'danger',
+                        z_index: 999999999
+                    });
+                    return;
+                } 
+                updateInsuranceNumber(insuranceId, insuranceNumber);
+            }
+        });
+    }
+
+    function updateInsuranceNumber(insuranceId, insuranceNumber) {
+        $.ajax({
+            url: '/include/api/pages/insurances.php?action=UpdateInsuranceNumber',
+            type: 'POST',
+            data: {
+                'id': insuranceId,
+                'insuranceNumber': insuranceNumber
+            },
+            success: function(data) {
+                data = JSON.parse(data);
+                if (data.status == 'success') {
+                    $.notify({
+                        title: '<strong></strong>',
+                        message: '<strong>' + data.message + '</strong>'
+                    }, {
+                        type: 'success',
+                    });
+
+                    var row = table.row($('#TableInsurances').find('.EditInsuranceNumber').closest('tr'));
+                    var rowData = row.data();
+                    rowData[2] = insuranceNumber;
+                    row.data(rowData).draw();
+
+                    UpdateALLInfo();
+                } else {
+                    $.notify({
+                        title: '<strong></strong>',
+                        message: '<strong>' + data.message + '</strong>'
+                    }, {
+                        type: 'danger',
+                    });
+                }
+            }
         });
     }
 
@@ -320,6 +494,7 @@ $(document).ready(function() {
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true" class="text-right text-left">&times;</span>
                         </button>
+                        
                     </div>
                     <div class="modal-body text-right">
                         <input type="hidden" name="id" id="id">
@@ -330,6 +505,15 @@ $(document).ready(function() {
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="GeneralCommand " class="col-sm-3 col-form-label">هل تم تأمين في قيادة العامة ؟</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="GeneralCommand" name="GeneralCommand">
+                                    <option value="1">نعم</option>
+                                    <option value="0">لا</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row insuranceNumberDev" style="display: none;">
                             <label for="insuranceNumber" class="col-sm-3 col-form-label">رقم التأمين</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="insuranceNumber" name="insuranceNumber">
@@ -396,8 +580,20 @@ $(document).ready(function() {
                     var insurance = data.insurance;
                     $('#memberId').val(insurance.member_id);
                     $('#id').val(insurance.id);
-                    $('#insuranceNumber').val(insurance.insurance_number);
                     $('#amount').val(insurance.amount);
+
+                    $('#GeneralCommand').val(insurance.general_command);
+
+                    if(insurance.general_command == 1){
+                        $('.insuranceNumberDev').show();
+                        $('#insuranceNumber').val(insurance.insurance_number);
+                    }else{
+                        $('.insuranceNumberDev').hide();
+                        $('#insuranceNumber').val('');
+                    }
+
+
+
                    
                     $('#year').val(insurance.year);
                     $('#paid').prop('checked', insurance.paid == 1);
@@ -409,10 +605,28 @@ $(document).ready(function() {
     
     });
 
+    $(document).on('change', '#GeneralCommand', function() {
+        if ($(this).val() == 1) {
+            $('.insuranceNumberDev').show();
+        } else {
+            $('.insuranceNumberDev').hide();
+        }
+    });
+
 
 
     $(document).on('click', '#submitEditInsurances', function() {
         var form = $('#formEditInsurances').serialize();
+
+        if ($('#GeneralCommand').val() == 0) {
+            form += '&insuranceNumber=';
+        }else{
+            form += '&insuranceNumber=' + $('#insuranceNumber').val();
+        }
+
+
+        
+
         $.ajax({
             url: '/include/api/pages/insurances.php?action=UpdateInsurance',
             type: 'POST',
@@ -530,24 +744,20 @@ $(document).ready(function() {
                         if (willAdd) {
                             var insuranceNumber = document.getElementById('swal-insurance-number').value;
                             var paid = document.getElementById('swal-insurance-paid').value;
-
-                            if (insuranceNumber === '') {
-                                swal({
-                                    title: "خطأ",
-                                    text: "رجاءً أدخل رقم التأمين",
-                                    icon: "error",
-                                    buttons: "موافق"
-                                });
-                                return;
+                            if(insuranceNumber != ''){
+                                var general_command = 1;
+                            }else{
+                                var general_command = 0;
                             }
-
-                    
+                            
                             var DataPost = {
                                 member_id: member_id,
                                 insurance_number: insuranceNumber,
                                 amount: amount,
                                 year: new Date().getFullYear(),
-                                paid: paid
+                                paid: paid,
+                                general_command: general_command
+
                             };
                             
                     

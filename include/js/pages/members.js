@@ -38,6 +38,8 @@ $(document).ready(function() {
         "ordering": true,
         "info": true,
         "autoWidth": true,
+        scrollX: true,
+        scrollY: '50vh',
     });
 
     

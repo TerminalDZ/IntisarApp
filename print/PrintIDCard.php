@@ -263,89 +263,111 @@ $totalCards = count($membersId);
 $cardsPerPage = 8; 
 
 $cardIndex = 0;
+$membersData = [];
+
 foreach ($membersId as $memberId) {
     $where = 'archiv = 0 AND member_id = ' . $memberId;
     $result = DB::select('members', $where);
     if ($result->num_rows > 0) {
         $member = $result->fetch_assoc();
-
-        if ($member['scout_unit'] == 'أشبال' || $member['scout_unit'] == 'زهرات') {
-            $ColorUnit = 'Yellow';
-        } else if ($member['scout_unit'] == 'كشاف' || $member['scout_unit'] == 'دليلات') {
-            $ColorUnit = 'Green';
-        } else if ($member['scout_unit'] == 'جوال' || $member['scout_unit'] == 'مرشدات') {
-            $ColorUnit = 'Red';
-        } else if ($member['scout_unit'] == 'قائد' || $member['scout_unit'] == 'عميد') {
-            $ColorUnit = 'Blue';
-        } else {
-            $ColorUnit = ' ';
-        }
-
-        if ($cardIndex % $cardsPerPage == 0) {
-            if ($cardIndex != 0) {
-                echo '</div>'; 
-            }
-            echo '<div class="containerID" id="printIDCard">'; 
-        }
-        ?>
-        <div class="CardID">
-            <div class="Line <?=$ColorUnit?>"></div> 
-            <div class="logo">
-                <img src="<?=$urlUploads?><?=$settings['logo']?>" alt="logo">
-            </div>
-            <div class="names">
-                <div class="nameScout">
-                    <span>قدماء الكشافة الاسلامية الجزائرية</span>
-                </div>
-                <div class="nameMohafdt">
-                    <span>المحافظة الولائية سطيف</span>
-                </div>
-                <div class="nameGroup">
-                    <span><?=$settings['site_name']?></span>
-                </div>
-            </div>
-            <div class="CardRed">
-                <span>بطاقة المعلومات</span>
-            </div>
-
-
-            <div class="picTure">
-                <img src="<?=$urlUploads?><?=$member['picture']?>" alt="picture">
-            </div> 
-            
-            <div class="LabelName">
-                <span>الاسم و اللقب : <?=$member['first_name'] . ' ' . $member['last_name']?></span>
-            </div>
-            <div class="LabelDate">
-                <span>تاريخ و مكان الميلاد : <?=$member['dob'] . ' ' . $member['place_of_increase']?></span>
-            </div>
-            <div class="LabelScoutUnit">
-                <span>الوحدة الكشفية :  <?=$member['scout_unit']?></span>
-            </div>
-
-            <div class="Signature">
-                <span> قائد الفوج : </span>
-            </div>
-
-            <div class="QRCode">
-                <img src="<?=$urlQR?>?text=<?=$member['member_id']?>" alt="QR Code">
-            </div>
-
-            <div class="MemberID">
-                <span> رقم المنخرط : <?=$member['member_id']?></span>
-            </div>
-
-
-
-        </div>
-        <?php
-        $cardIndex++;
+        $membersData[] = $member;
     }
+}
+
+$scoutUnitOrder = [
+    'أشبال' => 1,
+    'زهرات' => 2,
+    'كشاف' => 3,
+    'دليلات' => 4,
+    'جوال' => 5,
+    'مرشدات' => 6,
+    'قائد' => 7,
+    'عميد' => 8
+];
+
+function compareScoutUnit($a, $b) {
+    global $scoutUnitOrder;
+    return $scoutUnitOrder[$a['scout_unit']] <=> $scoutUnitOrder[$b['scout_unit']];
+}
+
+usort($membersData, 'compareScoutUnit');
+
+foreach ($membersData as $member) {
+    if ($member['scout_unit'] == 'أشبال' || $member['scout_unit'] == 'زهرات') {
+        $ColorUnit = 'Yellow';
+    } else if ($member['scout_unit'] == 'كشاف' || $member['scout_unit'] == 'دليلات') {
+        $ColorUnit = 'Green';
+    } else if ($member['scout_unit'] == 'جوال' || $member['scout_unit'] == 'مرشدات') {
+        $ColorUnit = 'Red';
+    } else if ($member['scout_unit'] == 'قائد' || $member['scout_unit'] == 'عميد') {
+        $ColorUnit = 'Blue';
+    } else {
+        $ColorUnit = ' ';
+    }
+
+    if ($cardIndex % $cardsPerPage == 0) {
+        if ($cardIndex != 0) {
+            echo '</div>'; 
+        }
+        echo '<div class="containerID" id="printIDCard">'; 
+    }
+    ?>
+    <div class="CardID">
+        <div class="Line <?=$ColorUnit?>"></div> 
+        <div class="logo">
+            <img src="<?=$urlUploads?><?=$settings['logo']?>" alt="logo">
+        </div>
+        <div class="names">
+            <div class="nameScout">
+                <span>قدماء الكشافة الاسلامية الجزائرية</span>
+            </div>
+            <div class="nameMohafdt">
+                <span>المحافظة الولائية سطيف</span>
+            </div>
+            <div class="nameGroup">
+                <span><?=$settings['site_name']?></span>
+            </div>
+        </div>
+        <div class="CardRed">
+            <span>بطاقة المعلومات</span>
+        </div>
+
+        <div class="picTure">
+            <img src="<?=$urlUploads?><?=$member['picture']?>" alt="picture">
+        </div> 
+        
+        <div class="LabelName">
+            <span>الاسم و اللقب : <?=$member['first_name'] . ' ' . $member['last_name']?></span>
+        </div>
+        <div class="LabelDate">
+            <span>تاريخ و مكان الميلاد : <?=$member['dob'] . ' ' . $member['place_of_increase']?></span>
+        </div>
+        <div class="LabelScoutUnit">
+            <span>الوحدة الكشفية :  <?=$member['scout_unit']?></span>
+        </div>
+
+        <div class="Signature">
+            <span> قائد الفوج : </span>
+        </div>
+
+        <div class="QRCode">
+            <img src="<?=$urlQR?>?text=<?=$member['member_id']?>" alt="QR Code">
+        </div>
+
+        <div class="MemberID">
+            <span> رقم المنخرط : <?=$member['member_id']?></span>
+        </div>
+
+    </div>
+    <?php
+    $cardIndex++;
 }
 if ($cardIndex % $cardsPerPage != 0) {
     echo '</div>';
 }
 ?>
+
+
  <!-- latest jquery-->
  <script src="<?=$urlAssets?>js/jquery-3.5.1.min.js"></script>
  <script src="<?=$urlAssets?>js/jquery.session.min.js"></script>
