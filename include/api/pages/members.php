@@ -1,6 +1,9 @@
 <?php
     include '../../init.php';
-
+    if (!isset($_SESSION['username'])) {
+        header('Location: ' . BASEURL . 'index.php');
+        exit();
+    }
 
     $action = $_GET['action'];
 
@@ -13,8 +16,10 @@
 
         $member = Members::get_data_member_id($member_id);
         
+        $insurances = Members::get_all_insurances($member_id);
+        
         if ($member != null) {
-            echo json_encode(array('status' => 'success', 'message' => 'تم العثور على العضو', 'data' => $member));
+            echo json_encode(array('status' => 'success', 'message' => 'تم العثور على العضو', 'data' => $member , 'insurances' => $insurances));
         } else {
             echo json_encode(array('status' => 'error', 'message' => 'لم يتم العثور على العضو'));
         }

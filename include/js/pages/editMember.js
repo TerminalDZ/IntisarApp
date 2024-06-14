@@ -95,27 +95,7 @@ $(document).ready(function(){
     });
 
 
-    //insurance
-
-    function insurance(){
-        var insurance = $('#insurance').val();
-
-        if(insurance == '1'){
-            $('#insurance_number_div').show();
-            $('#insurance_number').attr('required', 'required');
-        }else{
-            $('#insurance_number_div').hide();
-            $('#insurance_number').removeAttr('required');
-            $('#insurance_number').val('');
-        }
-
-    }
-    insurance();
-
-    $('#insurance').on('change', function(){
-        insurance();
-    });
-
+   
 
 
     //scout_unit
@@ -233,12 +213,7 @@ $(document).ready(function(){
         var phone_number = $('#phone_number').val();
         var address = $('#address').val();
 
-        //Insurance data
-
-        var insurance_payer = $('#insurance_payer').val();
-        var insurance = $('#insurance').val();
-        var insurance_number = $('#insurance_number').val();
-        
+       
         //Scouting data
 
         var has_scout_uniform = $('#has_scout_uniform').val();
@@ -274,9 +249,7 @@ $(document).ready(function(){
         formData.append('guardian_id_number', guardian_id_number);
         formData.append('phone_number', phone_number);
         formData.append('address', address);
-        formData.append('insurance_payer', insurance_payer);
-        formData.append('insurance', insurance);
-        formData.append('insurance_number', insurance_number);
+     
         formData.append('has_scout_uniform', has_scout_uniform);
         formData.append('scout_uniform_size', scout_uniform_size);
         formData.append('scout_uniform_payer', scout_uniform_payer);
@@ -318,10 +291,7 @@ $(document).ready(function(){
         var guardian_id_number = $('#guardian_id_number').val();
         var phone_number = $('#phone_number').val();
         var address = $('#address').val();
-        //Insurance data
-        var insurance_payer = $('#insurance_payer').val();
-        var insurance = $('#insurance').val();
-        var insurance_number = $('#insurance_number').val();
+        
         //Scouting data
         var has_scout_uniform = $('#has_scout_uniform').val();
         var scout_uniform_payer = $('#scout_uniform_payer').val();
@@ -485,37 +455,6 @@ $(document).ready(function(){
         }
 
 
-        //Insurance data
-
-        if (insurance_payer == '') {
-
-            validate = false;
-            $('#insurance_payer').addClass('is-invalid');
-            notify('خطأ', 'الرجاء إدخال جهة الدفع', 'danger');
-            return false;
-        }else {
-            $('#insurance_payer').removeClass('is-invalid');
-        }
-
-        if (insurance == '') {
-            validate = false;
-            $('#insurance').addClass('is-invalid');
-            notify('خطأ', 'الرجاء إدخال تأمين صحي', 'danger');
-            return false;
-        }else {
-            $('#insurance').removeClass('is-invalid');
-        }
-
-        if (insurance == '1') {
-            if (insurance_number == '') {
-                validate = false;
-                $('#insurance_number').addClass('is-invalid');
-                notify('خطأ', 'الرجاء إدخال رقم التأمين', 'danger');
-                return false;
-            }else {
-                $('#insurance_number').removeClass('is-invalid');
-            }
-        }
 
         //Scouting data
 

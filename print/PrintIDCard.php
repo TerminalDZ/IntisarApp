@@ -371,7 +371,6 @@ if ($cardIndex % $cardsPerPage != 0) {
  <!-- latest jquery-->
  <script src="<?=$urlAssets?>js/jquery-3.5.1.min.js"></script>
  <script src="<?=$urlAssets?>js/jquery.session.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.min.js"></script>
 <!-- Bootstrap js-->
 <script src="<?=$urlAssets?>js/bootstrap/popper.min.js"></script>
 <script src="<?=$urlAssets?>js/bootstrap/bootstrap.js"></script>

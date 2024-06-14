@@ -29,13 +29,7 @@
                             <div class="form-group col-md-6">
                                 <label for="inputState">المنخرط</label>
                                 <select id="member_idSelect" class="form-control">
-                                    <option value="" selected>اختر...</option>
-                                    <?php
-                                    $members = Members::get_all();
-                                    foreach ($members as $member) {
-                                        echo '<option value="'.$member['member_id'].'">'.$member['first_name'].' '.$member['last_name'].'</option>';
-                                    }
-                                    ?>
+                                   
                                 </select>
                             </div>
                             <div class="form-group col-md-12">

@@ -1,5 +1,67 @@
 $(document).ready(function() {
 
+    $('#member_idSelect').select2({
+        dir: "rtl",
+        placeholder: "اختر العضو",
+        allowClear: true,
+        minimumInputLength: 0,
+        language: {
+            errorLoading: function () {
+                return 'لا يمكن تحميل النتائج';
+            },
+            inputTooLong: function (args) {
+                return 'الرجاء حذف ' + (args.input.length - args.maximum) + ' عناصر';
+            },
+            inputTooShort: function (args) {
+                return 'الرجاء إضافة ' + (args.minimum - args.input.length) + ' عناصر';
+            },
+            loadingMore: function () {
+                return 'جاري تحميل نتائج اضافية...';
+            },
+            maximumSelected: function (args) {
+                return 'تستطيع ان تختار فقط ' + args.maximum + ' بنود';
+            },
+            noResults: function () {
+                return 'لم يتم العثور على نتائج';
+            },
+            searching: function () {
+                return 'جاري البحث…';
+            }
+        },
+
+
+        ajax: {
+            url: '/include/api/pages/insurances.php?action=GetMembers',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                var query = params.term || ''; 
+                return {
+                    q: query
+                };
+            },
+            processResults: function(data) {
+                var results = [];
+                $.each(data.members, function(index, item) {
+                    results.push({
+                        id: item.member_id,
+                        text: item.member_id + ' - ' + item.first_name + ' ' + item.last_name
+                    });
+                });
+
+                return {
+                    results: results
+                };
+                
+            },
+            cache: true
+        }
+
+
+    });
+
+
+
     function GetMembersByMemberId(memberID) {
         $.ajax({
             url: '/include/api/pages/insurances.php?action=GetMembersByMemberId',

@@ -159,33 +159,7 @@
                                 <input class="form-control" id="address" type="text" name="address" placeholder="العنوان" required="">
                             </div>
 
-                            <div class="col-md-12 mb-3 card bg-dark p-3 border text-center">
-                                <h5 class="text-white fw-bold"> بيانات التأمين</h5>
-                            </div>
                            
-
-                            <div class="col-md-6 mb-3">
-                                <label for="insurance_payer">هل منخرط دافع التأمين <span class="text-danger">*</span></label>
-                                <select class="form-control" id="insurance_payer" name="insurance_payer" required="">
-                                    <option value="">اختر</option>
-                                    <option value="1">نعم</option>
-                                    <option value="0">لا</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="insurance"> هل المنخرط مؤمن <span class="text-danger">*</span></label>
-                                <select class="form-control" id="insurance" name="insurance" required="">
-                                    <option value="">اختر</option>
-                                    <option value="1">نعم</option>
-                                    <option value="0">لا</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-12 mb-3" style="display: none;" id="insurance_number_div">
-                                <label for="insurance_number">رقم التأمين <span class="text-danger">*</span></label>
-                                <input class="form-control" id="insurance_number" type="text" name="insurance_number" placeholder="رقم التأمين">
-                            </div>
 
                             <div class="col-md-12 mb-3 card bg-dark p-3 border text-center">
                                 <h5 class="text-white fw-bold">بيانات الكشفية</h5>

@@ -1,6 +1,9 @@
 <?php
     include '../../init.php';
-
+    if (!isset($_SESSION['username'])) {
+        header('Location: ' . BASEURL . 'index.php');
+        exit();
+    }
 
     $action = $_GET['action'];
 
@@ -259,6 +262,27 @@
         } else {
             echo json_encode(array('status' => 'error', 'message' => 'حدث خطأ اثناء تحديث رقم التأمين'));
         }
+    }elseif($action == 'GetMembers'){
+
+        $q = $_GET['q'];
+
+        $where = "first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR member_id LIKE '%$q%'";
+        $data = DB::select('members', $where, 'member_id, first_name, last_name');
+
+        $members = array();
+        while ($row = $data->fetch_assoc()) {
+            $members[] = array(
+                'member_id' => $row['member_id'],
+                'first_name' => $row['first_name'],
+                'last_name' => $row['last_name']
+            );
+        }
+
+        echo json_encode(array('status' => 'success', 'message' => 'تم جلب الأعضاء بنجاح', 'members' => $members));
+
+
+
+
     }
 
 

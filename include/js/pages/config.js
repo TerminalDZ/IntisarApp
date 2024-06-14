@@ -14,14 +14,16 @@ $(document).ready(function(){
                 const data = JSON.parse(response);
                 if (data.status === 'success') {
                     notifyUser('success', data.message);
-                    const memberData = data.data;
+                    const memberData = data;
     
                     if (generateModule) {
-                        generateModuleMember(memberData);
+                        generateModuleMember(memberData, memberData.insurances);
+
+
                     }
     
                     if (printForm) {
-                        editImage(picture, memberData);
+                        editImage(picture, memberData.data);
                     }
                 } else {
                     notifyUser('danger', data.message);
@@ -69,7 +71,9 @@ $(document).ready(function(){
     
  
     
-    function generateModuleMember(data) {
+    function generateModuleMember(data, insurances) {
+        var data = data.data;
+
         if ($('#showMemberDATA').length) {
             $('#showMemberDATA').remove();
         }
@@ -80,16 +84,6 @@ $(document).ready(function(){
         const hobbies = data.hobbies || 'ليس لديه هوايات';
         const educationalInstitution = data.educational_institution || 'ليس مسجل في اي مؤسسة تعليمية';
         const sport = data.sport || 'ليس لديه رياضة مفضلة';
-
-        const insurance = data.insurance == '1' ? 'نعم' : 'لا';
-        const insuranceBadge = data.insurance == '1' ? 'badge-info' : 'badge-danger';
-        const insuranceStyle = data.insurance == '1' ? '' : 'style="display:none;"';
-    
-
-
-        const insurancePayer = data.insurance_payer == '1' ? 'نعم' : 'لا';
-        const insurancePayerBadge = data.insurance_payer == '1' ? 'badge-info' : 'badge-danger';
-
 
         const has_scout_uniform = data.has_scout_uniform == '1' ? 'نعم' : 'لا';
         const has_scout_uniformBadge = data.has_scout_uniform == '1' ? 'badge-info' : 'badge-danger';
@@ -104,6 +98,7 @@ $(document).ready(function(){
             GetUserFullName(data.added_by),
             GetUserFullName(data.last_modified_by)
         ).done(function (created_by, updated_by) {
+
 
     
         const modalContent = `
@@ -242,19 +237,30 @@ $(document).ready(function(){
                                         <div class="tab-pane fade" id="insurance-data" role="tabpanel" aria-labelledby="insurance-data-tab">
                                             
                                             <div class="row">
-
-                                                <div class="col-md-12 text-left">
-                                                    <b>هل منخرط في التأمين ؟</b> : <span class="badge ${insuranceBadge}">${insurance}</span>
+                                                <div class="table" style="overflow-x: auto;">
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>سنة التأمين</th>
+                                                                <th>رقم التأمين</th>
+                                                                <th>حالة دفع التأمين</th>
+                                                                <th>كم تم دفعه</th>
+                                                                <th>متى تم اضافته</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        ${Array.isArray(insurances) ? insurances.map(insurance => `
+                                                            <tr>
+                                                                <td>${insurance.year}</td>
+                                                                <td>${insurance.insurance_number || '<span class="badge badge-danger">لم يتم تأمينه في قيادة العامة</span>'}</td>
+                                                                <td>${insurance.paid == '1' ? '<span class="badge badge-success">تم الدفع</span>' : '<span class="badge badge-danger">لم يتم الدفع</span>'}</td>
+                                                                <td>${insurance.amount}</td>
+                                                                <td>${insurance.created_at}</td>
+                                                            </tr>
+                                                        `).join('') : ''}
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                                
-                                                <div class="col-md-12 text-left" ${insuranceStyle}>
-                                                    <b>رقم التأمين</b> : <span>${data.insurance_number}</span>
-                                                </div>
-    
-                                                <div class="col-md-12 text-left">
-                                                    <b>هل منخرط دافع التأمين ؟</b> : <span class="badge ${insurancePayerBadge}">${insurancePayer}</span>
-                                                </div>
-
                                             </div>
 
 
@@ -335,42 +341,81 @@ $(document).ready(function(){
     
     function editImage(picture = false, form) {
         const imageUrl = '../../../assets/pdf/Form.jpg';
+        const QrUrl = '/include/api/qr/qrcode.php?text=' + form.member_id;
     
-        $('<img/>').attr('src', imageUrl).on('load', function() {
+        var member_id = form.member_id || '';
+        var first_name = form.first_name || '';
+        var last_name = form.last_name || '';
+        var dob = form.dob || '';
+        var place_of_increase = form.place_of_increase || '';
+        var address = form.address || '';
+        var father_name = form.father_name || '';
+        var mother_name = form.mother_name || '';
+        var mother_last_name = form.mother_last_name || '';
+        var guardian_id_number = form.guardian_id_number || '';
+        var job_father = form.job_father || '';
+        var job_mother = form.job_mother || '';
+        var phone_number = form.phone_number || '';
+        var educational_institution = form.educational_institution || '';
+        var sport = form.sport || '';
+        var hobbies = form.hobbies || '';
+        var chronic_diseases = form.chronic_diseases || '';
+        var insurance_number = form.insurance_number || '';
+        var joining_date = form.joining_date || '';
+    
+        const formImage = new Image();
+        formImage.src = imageUrl;
+        formImage.onload = function() {
             const canvas = $('<canvas/>')[0];
             const context = canvas.getContext('2d');
-            canvas.width = this.width;
-            canvas.height = this.height;
-            context.drawImage(this, 0, 0);
+            canvas.width = formImage.width;
+            canvas.height = formImage.height;
+            context.drawImage(formImage, 0, 0);
             context.font = "30px Arial";
             context.fillStyle = "red";
             context.textAlign = "right";
-            context.fillText(`${form.first_name} ${form.last_name}`, 900, 520);
-            context.fillText(form.dob, 900, 562);
-            context.fillText(form.place_of_increase, 900, 590);
-            context.fillText(form.address, 850, 630);
-            context.fillText(form.father_name, 950, 665);
-            context.fillText(`${form.mother_name} ${form.mother_last_name}`, 900, 700);
-            context.fillText(form.guardian_id_number, 800, 735);
-            context.fillText(form.job_father, 950, 770);
-            context.fillText(form.job_mother, 950, 805);
-            context.fillText(form.phone_number, 980, 840);
-            context.fillText(form.educational_institution, 900, 875);
-            context.fillText(form.sport, 900, 910);
-            context.fillText(form.hobbies, 880, 945);
-            context.fillText(form.chronic_diseases, 1100, 1020);
-            context.fillText(form.insurance_number, 800, 1140);
-            context.fillText(Date_Format(form.joining_date), 800, 1175);
+            context.fillText(`${first_name} ${last_name}`, 900, 520);
+            context.fillText(dob, 900, 562);
+            context.fillText(place_of_increase, 900, 590);
+            context.fillText(address, 850, 630);
+            context.fillText(father_name, 950, 665);
+            context.fillText(`${mother_name} ${mother_last_name}`, 900, 700);
+            context.fillText(guardian_id_number, 800, 735);
+            context.fillText(job_father, 950, 770);
+            context.fillText(job_mother, 950, 805);
+            context.fillText(phone_number, 980, 840);
+            context.fillText(educational_institution, 900, 875);
+            context.fillText(sport, 900, 910);
+            context.fillText(hobbies, 880, 945);
+            context.fillText(chronic_diseases, 1100, 1020);
+            context.fillText(member_id + ' | ' + insurance_number, 800, 1140);
+            context.fillText(Date_Format(joining_date), 800, 1175);
     
-            if (picture) {
-                const img = new Image();
-                img.src = `../../../uploads/${form.picture}`;
-                context.drawImage(img, 150, 415, 210, 250);
-            }
+           
+            const qr = new Image();
+            qr.src = QrUrl;
+            qr.onload = function() {
+                context.drawImage(qr, 1025, 270, 150, 150);
     
-            const dataURL = canvas.toDataURL('image/jpeg');
-            downloadURI(dataURL, "edited.jpg");
-        });
+                if (picture) {
+                    const img = new Image();
+                    img.src = `../../../uploads/${form.picture}`;
+                    img.onload = function() {
+                        context.drawImage(img, 150, 415, 210, 250);
+                        const dataURL = canvas.toDataURL('image/jpeg');
+                        downloadURI(dataURL, "edited.jpg");
+                    };
+                } else {
+                    const dataURL = canvas.toDataURL('image/jpeg');
+                    downloadURI(dataURL, "edited.jpg");
+                }
+            };
+         
+
+           
+            
+
+        };
     }
     
     function downloadURI(uri, name) {
@@ -384,6 +429,8 @@ $(document).ready(function(){
             printWindow.close();
         };
     }
+
+
 
     $(document).on('click', '.PrintForm', function(e) {
         e.preventDefault();

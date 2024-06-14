@@ -25,4 +25,6 @@
 <link rel="stylesheet" href="<?=$urlAssets?>css/dropify.css">
 <link rel="stylesheet" href="<?=$urlAssets?>css/selectize.default.min.css">
 <link rel="stylesheet" href="<?=$urlAssets?>css/select2.css">
+<link rel="stylesheet" type="text/css" href="<?=$urlAssets?>css/datatables.css" />
+<link rel="stylesheet" type="text/css" href="<?=$urlAssets?>css/datatable-extension.css">
 <script src="<?=$urlAssets?>js/chart.js"></script>

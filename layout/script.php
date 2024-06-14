@@ -29,7 +29,21 @@
 <script src="<?=$urlAssets?>js/select2/select2.full.min.js"></script>
 
 <script src="<?=$urlAssets?>js/selectize.min.js"></script>
+
 <script src="<?=$urlAssets?>js/datatable/datatables/jquery.dataTables.min.js" ></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/dataTables.buttons.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/jszip.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/pdfmake.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/vfs_fonts.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/dataTables.autoFill.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/dataTables.select.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/buttons.print.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/buttons.html5.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/dataTables.bootstrap4.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/dataTables.responsive.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/responsive.bootstrap4.min.js"></script>
+<script src="<?=$urlAssets?>js/datatable/datatable-extension/dataTables.keyTable.min.js"></script>
+
 <script src="<?=$urlAssets?>js/webcam.min.js"></script>
 <script src="<?=$urlAssets?>js/pdf-lib.js"></script>
 <script src="<?=$urlAssets?>js/jspdf.js"></script>

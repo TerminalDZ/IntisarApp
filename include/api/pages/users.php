@@ -1,7 +1,11 @@
 <?php
     include '../../init.php';
 
-
+    if (!isset($_SESSION['username'])) {
+        header('Location: ' . BASEURL . 'index.php');
+        exit();
+    }
+    
     $action = $_GET['action'];
 
     

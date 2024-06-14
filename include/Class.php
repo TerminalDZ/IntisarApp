@@ -234,6 +234,24 @@ class Members
         }
     }
 
+    public static function get_all_insurances($member_id)
+    {
+        global $db;
+
+        $sql = "SELECT * FROM insurances WHERE member_id = '$member_id'";
+        $result = $db->query($sql);
+
+        $insurances = array();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $insurances[] = $row;
+            }
+        }
+
+        return $insurances;
+    }
+
     public static function get_all()
     {
         global $db;

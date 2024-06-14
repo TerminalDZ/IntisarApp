@@ -1,6 +1,9 @@
 <?php
     include '../../init.php';
-
+    if (!isset($_SESSION['username'])) {
+        header('Location: ' . BASEURL . 'index.php');
+        exit();
+    }
 
     $action = $_GET['action'];
 
@@ -49,11 +52,7 @@
         $guardian_id_number = $_POST['guardian_id_number'];
         $phone_number = $_POST['phone_number'];
         $address = $_POST['address'];
-        ////
-        $insurance_payer = $_POST['insurance_payer'];
-        $insurance = $_POST['insurance'];
-        $insurance_number = $_POST['insurance_number'];
-        ////
+       
         $has_scout_uniform = $_POST['has_scout_uniform'];
         $scout_uniform_size = $_POST['scout_uniform_size'];
         $scout_uniform_payer = $_POST['scout_uniform_payer'];
@@ -68,7 +67,7 @@
 
 
 
-        if ($member_id == '' || $first_name == '' || $last_name == '' || $gender == '' || $dob == ''|| $place_of_increase == '' || $father_name == '' || $mother_name == '' || $mother_last_name == '' || $job_father == '' || $job_mother == '' || $family_status == '' || $living_condition == '' || $guardian_id_number == '' || $phone_number == '' || $address == '' || $insurance_payer == '' || $insurance == '' || $has_scout_uniform == '' || $scout_uniform_payer == '' || $scout_unit == '' || $joining_date == '') {
+        if ($member_id == '' || $first_name == '' || $last_name == '' || $gender == '' || $dob == ''|| $place_of_increase == '' || $father_name == '' || $mother_name == '' || $mother_last_name == '' || $job_father == '' || $job_mother == '' || $family_status == '' || $living_condition == '' || $guardian_id_number == '' || $phone_number == '' || $address == '' || $has_scout_uniform == '' || $scout_uniform_payer == '' || $scout_unit == '' || $joining_date == '') {
             echo json_encode(array('status' => 'error', 'message' => 'جميع الحقول مطلوبة'));
             die();
         }
@@ -80,13 +79,7 @@
             }
         }
 
-        if ($insurance == '1') {
-            if ($insurance_number == '') {
-                echo json_encode(array('status' => 'error', 'message' => 'الرجاء إدخال رقم التأمين'));
-                die();
-            }
-        }
-
+       
 
         //check member_id if already exist
         $where = "member_id = '$member_id'";
@@ -137,9 +130,7 @@
             'guardian_id_number' => $guardian_id_number,
             'phone_number' => $phone_number,
             'address' => $address,
-            'insurance_payer' => $insurance_payer,
-            'insurance' => $insurance,
-            'insurance_number' => $insurance_number,
+
             'has_scout_uniform' => $has_scout_uniform,
             'scout_uniform_size' => $scout_uniform_size,
             'scout_uniform_payer' => $scout_uniform_payer,
@@ -222,11 +213,7 @@
         $guardian_id_number = $_POST['guardian_id_number'];
         $phone_number = $_POST['phone_number'];
         $address = $_POST['address'];
-        ////
-        $insurance_payer = $_POST['insurance_payer'];
-        $insurance = $_POST['insurance'];
-        $insurance_number = $_POST['insurance_number'];
-        ////
+    
         $has_scout_uniform = $_POST['has_scout_uniform'];
         $scout_uniform_size = $_POST['scout_uniform_size'];
         $scout_uniform_payer = $_POST['scout_uniform_payer'];
@@ -241,7 +228,7 @@
 
 
 
-        if ($member_id == '' || $first_name == '' || $last_name == '' || $gender == '' || $dob == ''|| $place_of_increase == '' || $father_name == '' || $mother_name == '' || $mother_last_name == '' || $job_father == '' || $job_mother == '' || $family_status == '' || $living_condition == '' || $guardian_id_number == '' || $phone_number == '' || $address == '' || $insurance_payer == '' || $insurance == '' || $has_scout_uniform == '' || $scout_uniform_payer == '' || $scout_unit == '' || $joining_date == '') {
+        if ($member_id == '' || $first_name == '' || $last_name == '' || $gender == '' || $dob == ''|| $place_of_increase == '' || $father_name == '' || $mother_name == '' || $mother_last_name == '' || $job_father == '' || $job_mother == '' || $family_status == '' || $living_condition == '' || $guardian_id_number == '' || $phone_number == '' || $address == '' || $has_scout_uniform == '' || $scout_uniform_payer == '' || $scout_unit == '' || $joining_date == '') {
             echo json_encode(array('status' => 'error', 'message' => 'جميع الحقول مطلوبة'));
             die();
         }
@@ -253,12 +240,7 @@
             }
         }
 
-        if ($insurance == '1') {
-            if ($insurance_number == '') {
-                echo json_encode(array('status' => 'error', 'message' => 'الرجاء إدخال رقم التأمين'));
-                die();
-            }
-        }
+  
 
 
         //update data where member_id 
@@ -305,9 +287,7 @@
                 'guardian_id_number' => $guardian_id_number,
                 'phone_number' => $phone_number,
                 'address' => $address,
-                'insurance_payer' => $insurance_payer,
-                'insurance' => $insurance,
-                'insurance_number' => $insurance_number,
+             
                 'has_scout_uniform' => $has_scout_uniform,
                 'scout_uniform_size' => $scout_uniform_size,
                 'scout_uniform_payer' => $scout_uniform_payer,
