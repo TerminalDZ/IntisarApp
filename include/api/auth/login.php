@@ -12,6 +12,11 @@
     $password = $_POST['password'];
     $remember = $_POST['remember'];
 
+    if ($EmailOrUsername == '' || $password == '') {
+        echo json_encode(array('status' => 'error', 'message' => 'الرجاء ملء جميع الحقول'));
+        die();
+    }
+
 
     $where = "email = '" . $EmailOrUsername . "' OR username = '" . $EmailOrUsername . "'";
     $result = DB::select('users', $where);

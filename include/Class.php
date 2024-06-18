@@ -43,6 +43,9 @@ class User
             return null;
         }
     }
+
+  
+
 }
 
 
@@ -198,6 +201,27 @@ class Mail
 
         return self::send($to, $subject, $body, $htmlFilePath, $variables);
     }
+
+
+    public static function send_forgot_password($email, $token, $base_url)
+    {
+        $to = $email;
+        $htmlFilePath = __DIR__ . '/../mail/ForgotPassword.tpl';
+        $subject = 'نسيت كلمة المرور';
+        $body = 'نسيت كلمة المرور';
+
+        $variables = [
+            'token' => $token,
+            'site_name' => Settings::get()['site_name'],
+            'site_url' => $base_url,
+
+        ];
+
+        return self::send($to, $subject, $body, $htmlFilePath, $variables);
+    }
+
+
+
 }
 
 

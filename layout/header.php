@@ -18,7 +18,7 @@
                 <input class="Typeahead-input form-control-plaintext" id="SearchMembers" type="text" name="q" placeholder="بحث عن منخرط"  dir="rtl">
                 <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">تحميل</span></div><span class="d-sm-none mobile-search"><i data-feather="search"></i></span>
               </div>
-              <div class="Typeahead-menu">
+              <div class="Typeahead-menu" style="overflow: auto; height: 300px;">
              
               </div>
             </div>
