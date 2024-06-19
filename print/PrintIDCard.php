@@ -349,9 +349,11 @@ foreach ($membersData as $member) {
         <div class="Signature">
             <span> قائد الفوج : </span>
         </div>
-
+        <?php
+        $url= $base_url . 'check/Profile.php?MemberID=' . $member['member_id'];
+        ?>
         <div class="QRCode">
-            <img src="<?=$urlQR?>?text=<?=$base_url?>check/Profile.php?MemberID=<?=$member['member_id']?>" alt="QR Code">
+            <img src="<?=$urlQR?>?text=<?=urlencode($url)?>" alt="QR Code">
         </div>
 
         <div class="MemberID">

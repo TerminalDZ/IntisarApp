@@ -1,14 +1,10 @@
 <?php
-    include '../../init.php';
-    if (!isset($_SESSION['username'])) {
-        header('location: ../../index.php');
-    }
+include '../../init.php';
 
-    $text = $_GET['text'];
-    
-    
-    
-    // outputs image directly into browser, as PNG stream
-    QRcode::png($text);
+$text = isset($_GET['text']) ? $_GET['text'] : '';
 
-    ?>
+$text = urldecode($text);
+
+
+QRcode::png($text);
+?>

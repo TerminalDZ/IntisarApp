@@ -83,11 +83,15 @@ function FormartDate($date) {
                 <span id="date">بالتاريخ: <span class="red"><?=FormartDate($insurance['updated_at_paid'])?></span></span><br>
                 <span id="inc">لتامين الكشاف:</span>
                 <span id="name" class="red"><?=$member['first_name'] . ' ' . $member['last_name']?></span>
-                <span id="year">لسنة: <span class="red"><?=$insurance['year']?></span></span>
+                <span id="year">لسنة: <span class="red"><?=$insurance['year']?> / <?=$insurance['year'] + 1?></span></span>
             </div>
 
+                <?php
+                $url = $base_url . 'check/Insurances.php?MemberID=' . $member['member_id'] . '&year=' . $insurance['year'];
+                ?>
+
             <div class="QRCode">
-                <img src="<?=$urlQR?>?text=<?=$base_url?>check/Insurances.php?MemberID=<?=$member['member_id']?>&year=<?=$insurance['year']?>" alt="QRCode">
+                <img src="<?=$urlQR?>?text=<?=urlencode($url)?>" alt="QRCode">
             </div>
 
             <div class="MemberID">
