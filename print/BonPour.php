@@ -332,9 +332,12 @@ for ($i = 0; $i < $container; $i++) {
 
            
         </div>
-        <?php if ($i % $containersPerPage < $containersPerPage - 1 && $i < $container - 1) { ?>
-        <div class="dotted-line"></div>
-    <?php } ?>
+        <?php 
+        $containerNumber = $i + 1;
+        if ($containerNumber % 3 != 0) {
+            ?>
+            <div class="dotted-line"></div>
+        <?php } ?>
 <?php
     if ($i == $container - 1) {
         echo '</div>';
@@ -351,9 +354,8 @@ for ($i = 0; $i < $container; $i++) {
 <!-- feather icon js-->
 <script>
     $(document).ready(function() {
-        
-       
-        window.print();
+ 
+       window.print();
 
     });
 
