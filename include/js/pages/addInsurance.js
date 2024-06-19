@@ -180,7 +180,10 @@ $(document).ready(function() {
         let powerTorch = false;
     
         function onScanSuccess(qrCodeMessage) {
-            if (isNaN(qrCodeMessage) || qrCodeMessage.length !== 6) {
+            let regex = /MemberID=(\d+)/;
+            let match = qrCodeMessage.match(regex);
+    
+            if (!match || match.length < 2) {
                 $.notify({
                     title: '<strong></strong>',
                     message: '<strong>رمز غير صالح</strong>'
@@ -191,9 +194,11 @@ $(document).ready(function() {
                 return;
             }
     
+            let memberId = match[1];
+    
             $('#QRScannerModal').modal('hide');
-            $('#member_idInput').val(qrCodeMessage);
-            GetMembersByMemberId(qrCodeMessage);
+            $('#member_idInput').val(memberId);
+            GetMembersByMemberId(memberId);
             if (isScanning) {
                 html5QrCode.stop().then(() => {
                     isScanning = false;
@@ -396,6 +401,17 @@ $(document).ready(function() {
         }
     }
 
+    function PrintReceipt(memberId, year) {
+        $url = '/print/BonPour.php?membersId=' + memberId + '&year=' + year;
+        var printWindow = window.open($url, 'PRINT');
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.onafterprint = function() {
+            printWindow.close();
+        };
+    }
+
     function postInsurance(data = {}, Close = false) {
         $.ajax({
             url: '/include/api/pages/insurances.php?action=AddInsurance',
@@ -417,6 +433,19 @@ $(document).ready(function() {
                         setTimeout(function () {
                             window.location.href = '/?p=insurances';
                         }, 1000);
+                    }
+
+                    if(data.paid == 1){    
+
+                        swal({
+                            title: "هل تريد طباعة وصل الاستلام؟",
+                            buttons: ["لا", "نعم"],
+                            dangerMode: true,
+                        }).then((willPrint) => {
+                            if (willPrint) {
+                                PrintReceipt(data.member_id, data.year);
+                            }
+                        });
                     }
 
                     $('#member_idInput, #amount, #paid, #InsuranceNumber').val('');

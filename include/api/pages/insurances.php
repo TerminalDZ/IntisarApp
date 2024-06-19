@@ -76,7 +76,8 @@
         $paid = $_POST['paid'];
 
         $data = array(
-            'paid' => $paid
+            'paid' => $paid,
+            'updated_at_paid' => date('Y-m-d H:i:s')
         );
 
         $where = "id = '$id'";
@@ -126,9 +127,11 @@
         $year = $_POST['year'];
         if (isset($_POST['paid'])){
             $paid = $_POST['paid'];
+           
         }else{
             $paid = "off";
         }
+        $updated_at_paid =  date('Y-m-d H:i:s');
 
         $updated_by = $profile['id'];
 
@@ -140,7 +143,8 @@
             'year' => $year,
             'paid' => $paid,
             'general_command' => $general_command,
-            'updated_by' => $updated_by
+            'updated_by' => $updated_by,
+            'updated_at_paid' => $updated_at_paid
         );
 
         $where = "id = '$id'";
@@ -163,7 +167,8 @@
         $year = $_POST['year'];
         $paid = $_POST['paid'];
         $general_command = $_POST['general_command'];
-    
+        $updated_at_paid = date('Y-m-d H:i:s');
+       
 
         $created_by = $profile['id'];
 
@@ -197,13 +202,21 @@
             'paid' => $paid,
             'general_command' => $general_command,
             'created_by' => $created_by,
-            'updated_by' => $created_by
+            'updated_by' => $created_by,
+            'updated_at_paid' => $updated_at_paid
         );
 
         $insert = DB::insert('insurances', $data);
 
+        $dataReturn = array(
+            'member_id' => $member_id,
+            'year' => $year,
+            'paid' => $paid
+        );
+        
+
         if ($insert) {
-            echo json_encode(array('status' => 'success', 'message' => 'تم اضافة التأمين بنجاح'));
+            echo json_encode(array('status' => 'success', 'message' => 'تم اضافة التأمين بنجاح', 'data' => $dataReturn));
         } else {
             echo json_encode(array('status' => 'error', 'message' => 'حدث خطأ اثناء اضافة التأمين'));
         }

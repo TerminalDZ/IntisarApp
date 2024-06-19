@@ -351,7 +351,7 @@ foreach ($membersData as $member) {
         </div>
 
         <div class="QRCode">
-            <img src="<?=$urlQR?>?text=<?=$member['member_id']?>" alt="QR Code">
+            <img src="<?=$urlQR?>?text=<?=$base_url?>check/Profile.php?MemberID=<?=$member['member_id']?>" alt="QR Code">
         </div>
 
         <div class="MemberID">

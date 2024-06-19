@@ -196,10 +196,15 @@ $(document).ready(function() {
         filteredInsurances.forEach(function(insurance) {
             var date = new Date(insurance.created_at);
             var formattedDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            var updated_at_paid = new Date(insurance.updated_at_paid);
+            var formattedDatePaid = updated_at_paid.getFullYear() + '-' + (updated_at_paid.getMonth() + 1) + '-' + updated_at_paid.getDate();
             var paidBadge = insurance.paid == 1 ? '<span class="badge badge-success">دافع</span>' : '<span class="badge badge-danger">غير دافع</span>';
             var checked = insurance.paid == 1 ? 'checked' : '';
             var switchCheck = '<input type="checkbox" class="switch-check" data-id="' + insurance.id + '" ' + checked + '>';
             var insurance_number = insurance.insurance_number == '' ? '<span class="badge badge-danger EditInsuranceNumber" data-id="' + insurance.id + '" style="cursor: pointer;">لا يوجد</span>' : insurance.insurance_number;
+            
+            var receiptLink = insurance.paid == 1 ? '<a class="dropdown-item printReceipt" data-idP=' + insurance.member_id + '>طباعة وصل الاستلام</a>' : '';
+            
             table.row.add([
                 insurance.member_id,
                 insurance.member.first_name + ' ' + insurance.member.last_name,
@@ -208,7 +213,9 @@ $(document).ready(function() {
                 insurance.amount,
                 switchCheck + paidBadge,
                 formattedDate,
-                '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">العمليات</button> <div class="dropdown-menu"> <a class="dropdown-item editinsurances" data-idE=' + insurance.id + '>تعديل</a> <a class="dropdown-item deleteinsurances" data-idD=' + insurance.id + '>حذف</a> </div></div>'
+                formattedDatePaid,
+
+                '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">العمليات</button> <div class="dropdown-menu"> <a class="dropdown-item editinsurances" data-idE=' + insurance.id + '>تعديل</a> <a class="dropdown-item deleteinsurances" data-idD=' + insurance.id + '>حذف</a>' + receiptLink + ' </div></div>'
             ]).draw();
         });
 
@@ -234,6 +241,25 @@ $(document).ready(function() {
 
         });
     }
+
+    function PrintReceipt(memberId, year) {
+        $url = '/print/BonPour.php?membersId=' + memberId + '&year=' + year;
+        var printWindow = window.open($url, 'PRINT');
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.onafterprint = function() {
+            printWindow.close();
+        };
+    }
+
+    $('#TableInsurances').on('click','.printReceipt',function(){
+        var memberId = $(this).attr('data-idP');
+        var year = $('#yearInput').val();
+
+        PrintReceipt(memberId, year);
+      
+    });
 
 
     //Fillterss
@@ -801,10 +827,28 @@ $(document).ready(function() {
 
                 if (responseData.status === "success") {
                     UpdateALLInfo();
+
+                    if(data.paid == 1){    
+
+                        swal({
+                            title: "هل تريد طباعة وصل الاستلام؟",
+                            buttons: ["لا", "نعم"],
+                            dangerMode: true,
+                        }).then((willPrint) => {
+                            if (willPrint) {
+                                PrintReceipt(data.member_id, data.year);
+                            }
+                        });
+                    }
+                    
+
+
                 }
             }
         });
     }
+
+    
 
 
     const ModalQRScanner = `
@@ -879,8 +923,13 @@ $(document).ready(function() {
         let currentFacingMode = "environment"; 
         let powerTorch = false;
     
+   
+
         function onScanSuccess(qrCodeMessage) {
-            if (isNaN(qrCodeMessage) || qrCodeMessage.length !== 6) {
+            let regex = /MemberID=(\d+)/;
+            let match = qrCodeMessage.match(regex);
+    
+            if (!match || match.length < 2) {
                 $.notify({
                     title: '<strong></strong>',
                     message: '<strong>رمز غير صالح</strong>'
@@ -891,8 +940,10 @@ $(document).ready(function() {
                 return;
             }
     
+            let memberId = match[1];
+    
             $('#QRScannerModal').modal('hide');
-            GetMembersByMemberId(qrCodeMessage);
+            GetMembersByMemberId(memberId);
             if (isScanning) {
                 html5QrCode.stop().then(() => {
                     isScanning = false;
@@ -900,6 +951,7 @@ $(document).ready(function() {
             }
         }
 
+        
         function powerTorchToggle(powerOn) {
             if(html5QrCode.getState() === Html5QrcodeScannerState.SCANNING || html5QrCode.getState() === Html5QrcodeScannerState.PAUSED){
                 html5QrCode.applyVideoConstraints(
