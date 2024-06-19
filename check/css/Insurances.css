@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Lalezar&family=Lemonada:wght@700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    font-family: "Lemonada", cursive !important;
+    font-optical-sizing: auto !important;
+    font-weight: 700 !important;
+    font-style: normal !important;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+
+
+.container {
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.container .logo {
+    width: 3cm;
+    height: 3cm;
+    margin: 0 auto;
+}
+
+.container .logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.container .names {
+    margin-bottom: 20px;
+}
+
+.container .nameScout,
+.container .nameMohafdt,
+.container .nameGroup {
+    font-size: 10px;
+}
+
+.container .title {
+    font-size: 1.5rem;
+    margin: 20px 0;
+}
+
+.container .description {
+    margin: 20px 0;
+}
+
+
+
+.container .description .red {
+    color: red;
+}
+
+.container .QRCode {
+    width: 2cm;
+    height: 2cm;
+    margin: 20px auto;
+}
+
+.container .QRCode img {
+    width: 100%;
+    height: 100%;
+}
+
+.container .MemberID {
+    font-size: 1rem;
+    margin-top: 20px;
+}
+
+
+
+
+
+.container .alert {
+    font-size: 1rem;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}

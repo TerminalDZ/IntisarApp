@@ -318,7 +318,7 @@ for ($i = 0; $i < $container; $i++) {
             </div>
 
             <div class="QRCode">
-                <img src="<?=$urlQR?>?text=<?=$base_url?>check/Insurances.php?MemberID=<?=$member['member_id']?>" alt="QR Code">
+                <img src="<?=$urlQR?>?text=<?=$base_url?>check/Insurances.php?MemberID=<?=$member['member_id']?>&year=<?=$insurance['year']?>" alt="QRCode">
             </div>
             
             <div class="MemberID">
