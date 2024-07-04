@@ -30,6 +30,7 @@
                   <th>الاسم المستخدم</th>
                   <th>الاسم الكامل </th>
                   <th>البريد الالكتروني</th>
+                  <th>الدور</th>
                   <th>الحالة</th>
                   <th>العمليات</th>
                 </tr>
@@ -46,6 +47,20 @@
                     <td><?=$user['username']?></td>
                     <td><?=$user['fr_name']?> <?=$user['ls_name']?></td>
                     <td><?=$user['email']?></td>
+                    <td>
+
+                        <?php
+                        $role = User::getUserRoles($user['id']);
+
+                        if ($role) {
+                            echo '<span class="badge badge-primary">' . $role[0]['role_name'] . '</span>';
+                        } else {
+                            echo '<span class="badge badge-danger">لا يوجد دور</span>';
+                        }
+                        ?>
+
+
+                    </td>
                     <td>
                         <?php
                         if ($user['access'] == 1) {

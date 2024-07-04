@@ -44,9 +44,119 @@ class User
         }
     }
 
+    public static function assignUserRole($userId, $roleId)
+    {
+        global $db;
+        $sql = "INSERT INTO user_roles (user_id, role_id) VALUES ('$userId', '$roleId')";
+        return $db->query($sql);
+    }
+
+    public static function removeUserRole($userId, $roleId)
+    {
+        global $db;
+        $sql = "DELETE FROM user_roles WHERE user_id = '$userId' AND role_id = '$roleId'";
+        return $db->query($sql);
+    }
+
+
+    public static function getUserRoles($userId)
+    {
+        global $db;
+        $sql = "SELECT r.* FROM roles r
+                INNER JOIN user_roles ur ON r.id = ur.role_id
+                WHERE ur.user_id = '$userId'";
+        $result = $db->query($sql);
+
+        $roles = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $roles[] = $row;
+            }
+        }
+        return $roles;
+    }
+
+
+
+    public static function roleHasPermission($roleId, $permissionName)
+    {
+        global $db;
+        $sql = "SELECT p.id FROM permissions p
+                INNER JOIN role_permissions rp ON p.id = rp.permission_id
+                WHERE rp.role_id = '$roleId' AND p.permission_name = '" . $db->real_escape_string($permissionName) . "'";
+        $result = $db->query($sql);
+
+        return $result->num_rows > 0;
+    }
+
+
+
   
 
 }
+
+class Permission
+{
+    public static function addPermission($permissionName)
+    {
+        global $db;
+        $sql = "INSERT INTO permissions (permission_name) VALUES ('" . $db->real_escape_string($permissionName) . "')";
+        return $db->query($sql);
+    }
+
+    public static function assignPermissionToRole($roleId, $permissionId)
+    {
+        global $db;
+        $sql = "INSERT INTO role_permissions (role_id, permission_id) VALUES ('$roleId', '$permissionId')";
+        return $db->query($sql);
+    }
+
+    public static function assignPermissionsToRole($roleId, $permissionIds)
+    {
+        global $db;
+        
+        $deleteSql = "DELETE FROM role_permissions WHERE role_id = '$roleId'";
+        $db->query($deleteSql);
+        
+        foreach ($permissionIds as $permissionId) {
+            $insertSql = "INSERT INTO role_permissions (role_id, permission_id) VALUES ('$roleId', '$permissionId')";
+            $db->query($insertSql);
+        }
+        
+        return true;
+    }
+
+    public static function removePermissionFromRole($roleId, $permissionId)
+    {
+        global $db;
+        $sql = "DELETE FROM role_permissions WHERE role_id = '$roleId' AND permission_id = '$permissionId'";
+        return $db->query($sql);
+    }
+
+    public static function getPermissionsByRole($roleId)
+    {
+        global $db;
+        $sql = "SELECT p.* FROM permissions p
+                INNER JOIN role_permissions rp ON p.id = rp.permission_id
+                WHERE rp.role_id = '$roleId'";
+        $result = $db->query($sql);
+
+        $permissions = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $permissions[] = $row;
+            }
+        }
+        return $permissions;
+    }
+
+
+
+
+ 
+ 
+}
+
 
 
 

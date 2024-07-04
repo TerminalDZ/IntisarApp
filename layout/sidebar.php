@@ -40,6 +40,7 @@
           <li><a href="/?p=settings">اعدادات الحساب</a></li>
           <li><a href="/?p=settingsSystem">اعدادات الموقع</a></li>
           <li><a href="/?p=settingsInsurance">اعدادات التأمين</a></li>
+          <li><a href="/?p=permissionsRoles">الصلاحيات والأدوار</a></li>
         </ul>
       </li>
       
