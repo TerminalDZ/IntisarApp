@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 19, 2024 at 11:09 AM
+-- Generation Time: Jul 08, 2024 at 10:47 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.0
 
@@ -79,7 +79,8 @@ INSERT INTO `insurances` (`id`, `member_id`, `insurance_number`, `general_comman
 (44, '852241', '', 0, NULL, 2024, '2024-06-19 07:04:42', '1', '2024-06-19 07:04:42', '1', '120.00', 1, '2024-06-19 08:04:42', 0),
 (45, '765432', '', 0, NULL, 2024, '2024-06-19 07:07:06', '1', '2024-06-19 07:07:06', '1', '140.00', 1, '2024-06-19 08:07:06', 0),
 (46, '234567', '', 0, NULL, 2024, '2024-06-19 07:07:48', '1', '2024-06-19 07:07:48', '1', '110.00', 1, '2024-06-19 08:07:48', 0),
-(47, '987654', '', 0, NULL, 2024, '2024-06-19 07:08:02', '1', '2024-06-19 07:08:02', '1', '120.00', 0, '2024-06-19 08:08:02', 0);
+(47, '987654', '', 0, NULL, 2024, '2024-06-19 07:08:02', '1', '2024-06-19 07:08:02', '1', '120.00', 0, '2024-06-19 08:08:02', 0),
+(48, '567890', '', 0, NULL, 2024, '2024-07-08 19:09:11', '10', '2024-07-08 19:12:13', '10', '100.00', 0, '2024-07-08 20:11:48', 1);
 
 -- --------------------------------------------------------
 
@@ -168,6 +169,111 @@ INSERT INTO `members` (`id`, `member_id`, `first_name`, `last_name`, `gender`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `permissions`
+--
+
+CREATE TABLE `permissions` (
+  `id` int NOT NULL,
+  `permission_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `permission_name`) VALUES
+(1, 'add_user'),
+(2, 'edit_user'),
+(3, 'delete_user'),
+(4, 'show_users'),
+(5, 'show_scout'),
+(6, 'add_scout'),
+(7, 'edit_scout'),
+(8, 'delete_scout'),
+(9, 'show_insurance'),
+(10, 'add_insurance'),
+(11, 'edit_insurance'),
+(12, 'delete_insurance'),
+(13, 'edit_insurance_settings'),
+(14, 'edit_website_settings'),
+(15, 'add_role_permission'),
+(16, 'edit_role_permission'),
+(17, 'delet_role_permission'),
+(18, 'show_role_permission');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int NOT NULL,
+  `role_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `role_name`) VALUES
+(1, 'admin'),
+(2, 'editor'),
+(3, 'user');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_permissions`
+--
+
+CREATE TABLE `role_permissions` (
+  `role_id` int NOT NULL,
+  `permission_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `role_permissions`
+--
+
+INSERT INTO `role_permissions` (`role_id`, `permission_id`) VALUES
+(1, 1),
+(2, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(2, 4),
+(3, 4),
+(1, 5),
+(2, 5),
+(3, 5),
+(1, 6),
+(2, 6),
+(1, 7),
+(2, 7),
+(1, 8),
+(2, 8),
+(1, 9),
+(2, 9),
+(3, 9),
+(1, 10),
+(2, 10),
+(1, 11),
+(2, 11),
+(1, 12),
+(2, 12),
+(1, 13),
+(2, 13),
+(1, 14),
+(1, 15),
+(1, 16),
+(1, 17),
+(1, 18),
+(3, 18);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `settings`
 --
 
@@ -231,7 +337,32 @@ INSERT INTO `users` (`id`, `fr_name`, `ls_name`, `username`, `email`, `bio`, `av
 (1, 'ادريس', 'بوكموش', 'idriss', 'boukemoucheidriss@gmail.com', '                                                                                                    مرحبا أنا ادريس                                                                                          ', 'Avatar/ادريس بوكموش/666b2fb94b0569.43960112.png', '$2y$10$gMS7w1c.9mNfrzeJZzaC7u3dmxik0vayyymEQEAGdZ.Jzyj3k9nDG', 1, '[]'),
 (6, 'yassar', 'boukmouche', 'yassar', 'bou.kemoucheidriss@gmail.com', NULL, 'Avatar/yassar boukmouche/66493d8d0f4526.16459071.png', '$2y$10$IaRQCNO9..YsTMlOpxZGSet3APDFh4JFF0YbMWil0lMrfsUN8nPWC', 1, '{\"1\":{\"token\":\"078bf6967da2a812fdb1310a37c8e9b7\",\"time\":1718705208},\"2\":{\"token\":\"c7aefdafd8ea04c0b9b8f20421001318\",\"time\":1718705354},\"3\":{\"token\":\"78a8a839431912a61c43f6926c5d24a0\",\"time\":1718705361}}'),
 (7, 'nizzar', 'bouk', 'nizzar', 'boukemouche.idriss@gmail.com', NULL, 'Avatar/user.png', '$2y$10$IaRQCNO9..YsTMlOpxZGSet3APDFh4JFF0YbMWil0lMrfsUN8nPWC', 0, '{\"1\":{\"token\":\"078bf6967da2a812fdb1310a37c8e9b7\",\"time\":1718705208},\"2\":{\"token\":\"c7aefdafd8ea04c0b9b8f20421001318\",\"time\":1718705354},\"3\":{\"token\":\"78a8a839431912a61c43f6926c5d24a0\",\"time\":1718705361}}'),
-(8, 'شمس الدين', 'بلقرون', 'acb', 'intisar@nutribien.net', NULL, 'Avatar/user.png', '$2y$10$IaRQCNO9..YsTMlOpxZGSet3APDFh4JFF0YbMWil0lMrfsUN8nPWC', 1, '{\"1\":{\"token\":\"078bf6967da2a812fdb1310a37c8e9b7\",\"time\":1718705208},\"2\":{\"token\":\"c7aefdafd8ea04c0b9b8f20421001318\",\"time\":1718705354},\"3\":{\"token\":\"78a8a839431912a61c43f6926c5d24a0\",\"time\":1718705361}}');
+(8, 'شمس الدين', 'بلقرون', 'acb', 'intisar@nutribien.net', NULL, 'Avatar/user.png', '$2y$10$IaRQCNO9..YsTMlOpxZGSet3APDFh4JFF0YbMWil0lMrfsUN8nPWC', 1, '{\"1\":{\"token\":\"078bf6967da2a812fdb1310a37c8e9b7\",\"time\":1718705208},\"2\":{\"token\":\"c7aefdafd8ea04c0b9b8f20421001318\",\"time\":1718705354},\"3\":{\"token\":\"78a8a839431912a61c43f6926c5d24a0\",\"time\":1718705361}}'),
+(10, 'abc', 'cba', 'aabbcc', 'aa@bb.cc', NULL, 'Avatar/user.png', '$2y$10$NmlgUTcAdXraa5qs7rDPTeNwAIhfq4x9HttG2n4VKBijo8tPRq0Pe', 1, NULL),
+(11, 'admin', 'admin', 'admin', 'admin@admin.com', NULL, 'Avatar/user.png', '$2y$10$TbJkqpWV0Nkb51vEmv9XD.TYZcHH6dIXNc/J.Zw72bJcElOKMF5s.', 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_roles`
+--
+
+CREATE TABLE `user_roles` (
+  `user_id` int NOT NULL,
+  `role_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `user_roles`
+--
+
+INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
+(1, 1),
+(8, 1),
+(11, 1),
+(6, 2),
+(7, 2),
+(10, 3);
 
 --
 -- Indexes for dumped tables
@@ -251,6 +382,25 @@ ALTER TABLE `members`
   ADD UNIQUE KEY `member_id` (`member_id`);
 
 --
+-- Indexes for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `role_permissions`
+--
+ALTER TABLE `role_permissions`
+  ADD PRIMARY KEY (`role_id`,`permission_id`),
+  ADD KEY `permission_id` (`permission_id`);
+
+--
 -- Indexes for table `settings`
 --
 ALTER TABLE `settings`
@@ -263,6 +413,13 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user_roles`
+--
+ALTER TABLE `user_roles`
+  ADD PRIMARY KEY (`user_id`,`role_id`),
+  ADD KEY `role_id` (`role_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -270,13 +427,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `insurances`
 --
 ALTER TABLE `insurances`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `settings`
@@ -288,7 +457,25 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `role_permissions`
+--
+ALTER TABLE `role_permissions`
+  ADD CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
+  ADD CONSTRAINT `role_permissions_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`);
+
+--
+-- Constraints for table `user_roles`
+--
+ALTER TABLE `user_roles`
+  ADD CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
