@@ -50,11 +50,12 @@ class User
         $sql = "INSERT INTO user_roles (user_id, role_id) VALUES ('$userId', '$roleId')";
         return $db->query($sql);
     }
+    
 
-    public static function removeUserRole($userId, $roleId)
+    public static function removeUserRole($userId)
     {
         global $db;
-        $sql = "DELETE FROM user_roles WHERE user_id = '$userId' AND role_id = '$roleId'";
+        $sql = "DELETE FROM user_roles WHERE user_id = '$userId'";
         return $db->query($sql);
     }
 
@@ -151,7 +152,19 @@ class Permission
     }
 
 
-
+    public static function YouHavePermission($permissionName)
+    {
+        if (User::is_logged_in()) {
+            $user = User::my_profile();
+            $roles = User::getUserRoles($user['id']);
+            foreach ($roles as $role) {
+                if (User::roleHasPermission($role['id'], $permissionName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
  
  

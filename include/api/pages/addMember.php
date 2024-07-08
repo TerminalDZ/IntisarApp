@@ -9,18 +9,27 @@
 
     
     if ($action == 'member_id') {
-
-        //check if the member id is already exist
-        $member_id = $_POST['member_id'];
-        $where = "member_id = '$member_id'";
-        $check = DB::select('members', $where);
-        if ($check->num_rows > 0) {
-            echo json_encode(array('status' => 'error', 'message' => 'رقم العضو موجود بالفعل'));
-        } else {
-            echo json_encode(array('status' => 'success', 'message' => 'رقم العضو غير موجود'));
+        if (!$show_scout) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            die();
         }
 
+            $member_id = $_POST['member_id'];
+            $where = "member_id = '$member_id'";
+            $check = DB::select('members', $where);
+            if ($check->num_rows > 0) {
+                echo json_encode(array('status' => 'error', 'message' => 'رقم العضو موجود بالفعل'));
+            } else {
+                echo json_encode(array('status' => 'success', 'message' => 'رقم العضو غير موجود'));
+            }
+        
+
     }elseif ($action == 'AddMember') {
+
+        if (!$add_scout) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            die();
+        }
 
         $token = $_POST['token'];
 
@@ -153,6 +162,8 @@
 
     }elseif ($action == 'Getfamiles') {
 
+       
+
         $select = "SELECT * FROM members";
         $result = $db->query($select);
         $data = array();
@@ -169,6 +180,11 @@
 
     }elseif ($action == 'GetMemberById') {
 
+        if (!$show_scout) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            die();
+        }
+
         $member_id = $_POST['member_id'];
 
         $where = "member_id = '$member_id'";
@@ -183,6 +199,11 @@
         }
 
     }elseif ($action == 'UpdateMember') {
+
+        if (!$edit_scout) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            die();
+        }
 
         $token = $_POST['token'];
 

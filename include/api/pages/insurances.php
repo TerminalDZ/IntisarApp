@@ -9,6 +9,10 @@
 
 
     if ($action == 'CountMembersInsuranced'){
+        if (!$show_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $year = $_POST['year'];
         $where = "year = '$year' AND archiv = '0'";
@@ -18,6 +22,10 @@
 
         echo json_encode(array('status' => 'success', 'message' => 'تم جلب عدد المنخرطين المأمنين بنجاح', 'count' => $count->num_rows, 'totalMembers' => $totalMembers));
     }elseif ($action == 'CountMembersSumamountInsuranced'){
+        if (!$show_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $year = $_POST['year'];
         $where = "year = '$year' AND archiv = '0' AND paid = '1'";
@@ -33,6 +41,11 @@
         
 
     }elseif ($action == 'GetYearsInput'){
+        if (!$show_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $query = "SELECT DISTINCT year FROM insurances";
         
         $result = $db->query($query);
@@ -44,6 +57,11 @@
 
         echo json_encode(array('status' => 'success', 'message' => 'تم جلب السنوات بنجاح', 'years' => $years));
     }elseif ($action == 'GetAllinsurances'){
+
+        if (!$show_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         if (isset($_POST['year'])) {
             $year = $_POST['year'];
@@ -71,6 +89,11 @@
 
     }elseif ($action == 'UpdatePaidStatus'){
 
+        if (!$edit_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
 
         $id = $_POST['id'];
         $paid = $_POST['paid'];
@@ -93,6 +116,11 @@
 
     }elseif ($action == 'DeleteInsurance'){
 
+        if (!$delete_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $id = $_POST['id'];
 
         $data = array(
@@ -112,6 +140,8 @@
 
     }elseif ($action == 'GetInsuranceById'){
 
+
+
         $id = $_POST['id'];
 
         $data = DB::select('insurances', "id = '$id'")->fetch_assoc();
@@ -119,6 +149,10 @@
         echo json_encode(array('status' => 'success', 'message' => 'تم جلب التأمين بنجاح', 'insurance' => $data));
 
     }elseif ($action == 'UpdateInsurance'){
+        if (!$edit_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $id = $_POST['id'];
         $insurance_number = $_POST['insuranceNumber'];
@@ -158,6 +192,10 @@
 
  
     }elseif ($action == 'AddInsurance'){
+        if (!$add_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
     
 
@@ -223,6 +261,7 @@
 
     }elseif ($action == 'GetMembersByMemberId'){
 
+
         $member_id = $_POST['member_id'];
 
         $data = DB::select('members', "member_id = '$member_id' AND archiv = 0", 'member_id , scout_unit')->fetch_assoc();
@@ -257,6 +296,12 @@
         echo json_encode(array('status' => 'success', 'message' => 'تم جلب العضو بنجاح', 'member' => $data, 'amount' => $amount));
 
     }elseif($action == 'UpdateInsuranceNumber'){
+
+        if (!$edit_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $id = $_POST['id'];
         $insurance_number = $_POST['insuranceNumber'];
 
@@ -276,6 +321,11 @@
             echo json_encode(array('status' => 'error', 'message' => 'حدث خطأ اثناء تحديث رقم التأمين'));
         }
     }elseif($action == 'GetMembers'){
+
+        if (!$show_insurance) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $q = $_GET['q'];
 

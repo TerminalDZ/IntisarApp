@@ -17,7 +17,9 @@
         <div class="card-header">
           <h5>جدول المستخدمين</h5>
           <div class="card-header-right">
+            <?php if ($add_user) { ?>
             <a href="?p=addUser" class="btn btn-primary">اضافة مستخدم</a>
+            <?php } ?>
           </div>
 
         </div>

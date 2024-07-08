@@ -12,6 +12,12 @@
   
     
     if ($action == 'GetMemberData') {
+
+        if (!$show_scout) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $member_id = $_POST['member_id'];
 
         $member = Members::get_data_member_id($member_id);
@@ -26,6 +32,7 @@
         
 
     }elseif ($action == 'GetUser') {
+
         $user_id = $_POST['id'];
 
         $user = User::get_data_id($user_id);
@@ -39,6 +46,11 @@
         }
         
     }elseif ($action == 'DeleteMember') {
+
+        if (!$delete_scout) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $member_id = $_POST['member_id'];
 
@@ -62,6 +74,11 @@
         }
     }elseif ($action == 'restoreMember') {
 
+        if (!$delete_scout) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $member_id = $_POST['member_id'];
 
         $where = "member_id = '$member_id'";
@@ -83,6 +100,11 @@
             echo json_encode(array('status' => 'error', 'message' => 'العضو غير موجود'));
         }
     }elseif ($action == 'SearchMembers') {
+        if (!$show_scout) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $search = $_POST['q'];
 
         if (empty($search) || ctype_space($search)) {

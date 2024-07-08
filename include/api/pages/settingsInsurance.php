@@ -9,6 +9,12 @@
 
   
   if ($action == 'saveSettingsInsurance') {
+
+    if (!$edit_insurance_settings) {
+        echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+        return;
+    }
+
       $token = $_POST['token'];
 
       if (!CSRF::validate($token)) {

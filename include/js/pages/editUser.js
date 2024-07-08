@@ -55,11 +55,12 @@ $(document).ready(function(){
         var ls_name = $('#ls_name').val();
         var username = $('#username').val();
         var email = $('#email').val();
+        var role = $('#role').val();
         var password = $('#password').val();
         var confirmPassword = $('#confirmPassword').val();
         var access = $('#access').val();
 
-        if(fr_name == '' || ls_name == '' || username == '' || email == '' || access == ''){
+        if(fr_name == '' || ls_name == '' || username == '' || email == '' || access == '' || role == ''){
             $.notify({
                 title: '<strong></strong>',
                 message: '<strong>الرجاء ملئ جميع الحقول</strong>'
@@ -82,7 +83,6 @@ $(document).ready(function(){
 
 
 
-
         $.ajax({
             url: '/include/api/pages/users.php?action=editUser',
             type: 'POST',
@@ -93,6 +93,7 @@ $(document).ready(function(){
                 ls_name: ls_name,
                 username: username,
                 email: email,
+                role: role,
                 password: password,
                 confirmPassword: confirmPassword,
                 access: access

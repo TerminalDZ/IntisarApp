@@ -80,8 +80,10 @@
                         </select>
                      </div>
                     <div class="card-header-right">
+                        <?php if ($add_insurance) { ?>
                         <a href="/?p=addInsurance" class="btn btn-outline-primary " style="margin-top: -20px !important;">اضافة تأمين</a>
-                        <button type="button" class="btn btn-primary" id="AddInsuranceFast" style="margin-top: -20px !important;">اضافة تأمين سريع</button>                 
+                        <button type="button" class="btn btn-primary" id="AddInsuranceFast" style="margin-top: -20px !important;">اضافة تأمين سريع</button>   
+                        <?php } ?>              
                     </div>
 
                 </div>

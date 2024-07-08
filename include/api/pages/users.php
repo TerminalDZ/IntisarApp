@@ -10,6 +10,10 @@
 
     
     if ($action == 'deleteUser') {
+        if (!$delete_user) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
 
         $id = $_POST['userId'];
@@ -17,12 +21,17 @@
         $user = DB::select('users', $where);
         $user = $user->fetch_assoc();
         if ($user['id'] != 1) {
+            User::removeUserRole($id);
             DB::delete('users', $where);
             echo json_encode(['status' => 'success', 'message' => 'تم حذف المستخدم بنجاح']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'لا يمكن حذف هذا المستخدم']);
         }
     }elseif($action =='addUser'){
+        if (!$add_user) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $token = $_POST['token'];
 
@@ -35,6 +44,7 @@
         $ls_name = $_POST['ls_name'];
         $username = $_POST['username'];
         $email = $_POST['email'];
+        $role = $_POST['role'];
         $password = $_POST['password'];
         $confirmPassword = $_POST['confirmPassword'];
         $access = $_POST['access'];
@@ -71,6 +81,11 @@
 
         $result = DB::insert('users', $data);
 
+        //assignUserRole
+        $userId = DB::select('users', "username = '$username'")->fetch_assoc()['id'];
+        
+        $assign = User::assignUserRole($userId, $role);
+
         if ($result) {
             echo json_encode(['status' => 'success', 'message' => 'تم اضافة المستخدم بنجاح']);
             $mail = Mail::send_create_account($email, $username, $password);
@@ -80,6 +95,10 @@
 
 
     }elseif($action == 'editUser'){
+        if (!$edit_user) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $token = $_POST['token'];
         if (!CSRF::validate($token)) {
@@ -92,6 +111,7 @@
         $ls_name = $_POST['ls_name'];
         $username = $_POST['username'];
         $email = $_POST['email'];
+        $role = $_POST['role'];
         $password = $_POST['password'];
         $confirmPassword = $_POST['confirmPassword'];
         $access = $_POST['access'];
@@ -149,6 +169,18 @@
         }
 
         $result = DB::update('users', $data, "id = $id");
+
+        if ($role == '') {
+            echo json_encode(['status' => 'error', 'message' => 'يجب اختيار دور']);
+            die();
+        }else{
+            if($result){
+                $removeOldRole = User::removeUserRole($id);
+                $assign = User::assignUserRole($id, $role);
+            }
+        }
+        
+
 
         if ($result) {
             echo json_encode(['status' => 'success', 'message' => 'تم تعديل المستخدم بنجاح']);

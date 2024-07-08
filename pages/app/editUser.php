@@ -57,6 +57,26 @@ if ($user == null) {
                                 <label for="email">البريد الالكتروني</label>
                                 <input class="form-control" id="email" type="email" name="email" placeholder="البريد الالكتروني" required="" value="<?=$user['email']?>">
                             </div>
+                            <div class="col-md-12 mb-3">
+								<label for="role">الدور</label>
+								<select class="form-control" id="role" name="role" required="">
+									<option value="">اختر الدور</option>
+									<?php
+										$roles = DB::query("SELECT * FROM roles");
+                                        $roleU = User::getUserRoles($user['id']);
+										foreach ($roles as $role) {
+                                            echo '<option value="'.$role['id'].'"';
+                                            if ($roleU[0]['id'] == $role['id']) {
+                                                echo 'selected';
+                                            }
+                                            echo '>'.$role['role_name'].'</option>';
+                                            
+                                            
+                                        }
+									?>
+								</select> 
+							</div>
+
                             <div class="col-md-4 mb-3">
                                 <label for="password">كلمة المرور</label>
                                 <div class="input-group">

@@ -10,6 +10,12 @@
 
     
     if ($action == 'UpdateSettings') {
+
+        if (!$edit_website_settings) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $token = $_POST['token'];
 
         if (!CSRF::validate($token)) {
@@ -73,6 +79,10 @@
         echo json_encode(array('status' => 'success', 'message' => 'تم تحديث الاعدادات بنجاح'));
 
     }elseif($action == 'UpdateSmtp'){
+        if (!$edit_website_settings) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $token = $_POST['token'];
 
@@ -108,6 +118,10 @@
 
 
     }elseif($action == 'TestSMTP'){
+        if (!$edit_website_settings) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
 
         $token = $_POST['token'];
 

@@ -9,6 +9,11 @@
 
 
     if ($action == 'AddRole'){
+        if (!$add_role_permission) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $token = $_POST['token'];
 
         if (!CSRF::validate($token)) {
@@ -41,6 +46,10 @@
             echo json_encode(array('status' => 'error', 'message' => 'حدث خطأ أثناء إضافة الدور'));
         }
     }elseif ($action == 'DeleteRole'){
+        if (!$delet_role_permission) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
         $role_id = $_POST['roleId'];
         $token = $_POST['token'];
 
@@ -48,7 +57,8 @@
             echo json_encode(array('status' => 'error', 'message' => 'CSRF Token is not valid'));
             die();
         }
-        if (is_array($role_id = [1, 2, 3])) {
+
+        if ($role_id == 1 || $role_id == 2 || $role_id == 3) {
             echo json_encode(array('status' => 'error', 'message' => 'لا يمكن حذف هذا الدور'));
             die();
         }
@@ -60,7 +70,13 @@
             die();
         }
 
+        $RolePermission = DB::query("SELECT * FROM role_permissions WHERE role_id = $role_id");
         
+        if ($RolePermission->num_rows > 0) {
+            $role_permissions = DB::delete('role_permissions', "role_id = $role_id");
+        }
+
+
 
         $result = DB::delete('roles', "id = $role_id");
 
@@ -70,6 +86,8 @@
             echo json_encode(array('status' => 'error', 'message' => 'حدث خطأ أثناء حذف الدور'));
         }
     }elseif($action == 'GetPermissions'){
+
+
 
         $token = $_POST['token'];
 
@@ -113,6 +131,12 @@
 
 
     }elseif ($action == 'EditRoleAndPermissions'){
+
+        if (!$edit_role_permission) {
+            echo json_encode(array('status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية'));
+            return;
+        }
+
         $token = $_POST['token'];
 
         if (!CSRF::validate($token)) {

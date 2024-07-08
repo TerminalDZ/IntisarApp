@@ -14,7 +14,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-header-right">
+                        <?php if ($add_role_permission) { ?>
                         <button class="btn btn-primary" id="addRole">اضافة دور جديد</button>
+                        <?php } ?>
                         <?=CSRF::create_token();?>
                     </div>
                 </div>

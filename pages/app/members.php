@@ -17,6 +17,9 @@
                     <h5 class="card-header-text">المنخرطين</h5>
                   
                     <div class="card-header-right">
+                        <?php if ($add_scout) { ?>
+                        <a href="?p=addMember" class="btn btn-primary">اضافة منخرط</a>
+                        <?php } ?>
                         <a href="#" id="PrintIDCard" class="btn btn-warning" style="display: none;">طباعة بطاقات المنخرطين</a>
 
 

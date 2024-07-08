@@ -36,6 +36,18 @@
 								<label for="email">البريد الالكتروني</label>
 								<input class="form-control" id="email" type="email" name="email" placeholder="البريد الالكتروني" required="">
 							</div>
+							<div class="col-md-12 mb-3">
+								<label for="role">الدور</label>
+								<select class="form-control" id="role" name="role" required="">
+									<option value="">اختر الدور</option>
+									<?php
+										$roles = DB::query("SELECT * FROM roles");
+										foreach ($roles as $role) {
+											echo '<option value="'.$role['id'].'">'.$role['role_name'].'</option>';
+										}
+									?>
+								</select> 
+							</div>
 							<div class="col-md-4 mb-3">
 								<label for="password">كلمة المرور</label>
                                 <div class="input-group">

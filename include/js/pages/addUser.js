@@ -55,11 +55,12 @@ $(document).ready(function(){
         var ls_name = $('#ls_name').val();
         var username = $('#username').val();
         var email = $('#email').val();
+        var role = $('#role').val();
         var password = $('#password').val();
         var confirmPassword = $('#confirmPassword').val();
         var access = $('#access').val();
 
-        if(fr_name == '' || ls_name == '' || username == '' || email == '' || password == '' || confirmPassword == '' || access == ''){
+        if(fr_name == '' || ls_name == '' || username == '' || email == '' || password == '' || confirmPassword == '' || access == '' || role == ''){
             $.notify({
                 title: '<strong></strong>',
                 message: '<strong>الرجاء ملئ جميع الحقول</strong>'
@@ -88,6 +89,7 @@ $(document).ready(function(){
                 ls_name: ls_name,
                 username: username,
                 email: email,
+                role: role,
                 password: password,
                 confirmPassword: confirmPassword,
                 access: access
@@ -105,6 +107,7 @@ $(document).ready(function(){
                     $('#ls_name').val('');
                     $('#username').val('');
                     $('#email').val('');
+                    $('#role').val('');
                     $('#password').val('');
                     $('#confirmPassword').val('');
                     $('#access').val('');
