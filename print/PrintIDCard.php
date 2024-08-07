@@ -322,7 +322,7 @@ foreach ($membersData as $member) {
                 <span>قدماء الكشافة الاسلامية الجزائرية</span>
             </div>
             <div class="nameMohafdt">
-                <span>المحافظة الولائية سطيف</span>
+                <span>المحافظة الولائية <?=$settings['governorate_state']?></span>
             </div>
             <div class="nameGroup">
                 <span><?=$settings['site_name']?></span>

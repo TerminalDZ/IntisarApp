@@ -58,6 +58,24 @@
                      <h6 class="form-label d-block">العنوان</h6>
                      <input type="text" class="form-control" id="address" value="<?=$settings['address']?>">
                   </div>
+                  <div class="form-group mb-2">
+                     <h6 class="form-label d-block">المحافظة الولائية</h6>
+                     <select class="form-control" id="governorate_state">
+                        <?php 
+                        
+                        $wilay = Wilaya::get_all();
+                        foreach ($wilay as $wilaya) {
+                           echo '<option value="'.$wilaya['wilaya_name'].'" '.($settings['governorate_state'] == $wilaya['wilaya_name'] ? 'selected' : '').'> ('.$wilaya['wilaya_code'].') محافظة '.$wilaya['wilaya_name'].'</option>';
+                        }
+                        ?>
+                        
+                     </select>
+                        
+                     
+                  </div>
+
+
+
                </form>
                <div class="form-footer mt-3 mb-3">
                   <button class="btn btn-primary btn-block btn-pill" id="UpdateSettings" type="button">تحديث الاعدادات</button>

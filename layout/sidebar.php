@@ -35,6 +35,21 @@
       </li>
       <?php } ?>
 
+      <?php if ($show_uniform) { ?>
+      <li><a class="bar-icons" href="#"><i class="pe-7s-note2"></i><span>الزي</span></a>
+        <ul class="iconbar-mainmenu custom-scrollbar">
+          <li class="iconbar-header">الزي</li>
+          <li><a href="/?p=uniforms">عرض الزي</a></li>
+          <?php if ($add_uniform) { ?>
+          <li><a href="/?p=addUniform">اضافة زي</a></li>
+          <?php } ?>
+        </ul>
+      </li>
+      <?php } ?>
+
+
+
+
       <?php if ($show_users) { ?>
 
       <li><a class="bar-icons" href="#"><i class="pe-7s-users"></i><span>المستخدمين</span></a>

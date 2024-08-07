@@ -31,8 +31,9 @@
         $email = $_POST['email'];
         $phone = $_POST['phone'];
         $address = $_POST['address'];
+        $governorate_state = $_POST['governorate_state'];
 
-        if (empty($site_name) || empty($description) || empty($keywords) || empty($email) || empty($phone) || empty($address)) {
+        if (empty($site_name) || empty($description) || empty($keywords) || empty($email) || empty($phone) || empty($address) || empty($governorate_state)) {
             echo json_encode(array('status' => 'error', 'message' => 'جميع الحقول مطلوبة'));
             die();
         }
@@ -48,6 +49,8 @@
         Settings::set('email', $email);
         Settings::set('phone', $phone);
         Settings::set('address', $address);
+        Settings::set('governorate_state', $governorate_state);
+
 
         $pathLogo = 'Logos/';
         $pathIcon = 'Icons/';

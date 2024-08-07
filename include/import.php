@@ -24,6 +24,13 @@ $add_insurance = Permission::YouHavePermission('add_insurance');
 $edit_insurance = Permission::YouHavePermission('edit_insurance');
 $delete_insurance = Permission::YouHavePermission('delete_insurance');
 
+//Uniform
+$show_uniform = Permission::YouHavePermission('show_uniform');
+$add_uniform = Permission::YouHavePermission('add_uniform');
+$edit_uniform = Permission::YouHavePermission('edit_uniform');
+$delete_uniform = Permission::YouHavePermission('delete_uniform');
+
+
 //Settings
 $edit_insurance_settings = Permission::YouHavePermission('edit_insurance_settings');
 $edit_website_settings = Permission::YouHavePermission('edit_website_settings');

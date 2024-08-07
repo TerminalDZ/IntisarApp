@@ -244,6 +244,29 @@ class Settings
         return $result;
     }
 }
+
+
+class Wilaya
+{
+    public static function get_all()
+    {
+        global $db;
+
+        $sql = "SELECT DISTINCT wilaya_code, wilaya_name FROM algeria_cities ORDER BY wilaya_code ASC";
+        $result = $db->query($sql);
+
+        $wilayas = array();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $wilayas[] = $row;
+            }
+        }
+
+        return $wilayas;
+    }
+}
+
 class Mail
 {
     public static function send($to, $subject, $body, $htmlFilePath = null, $variables = [])

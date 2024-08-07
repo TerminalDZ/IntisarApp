@@ -57,17 +57,14 @@ if ($member['scout_unit'] == 'أشبال') {
 <body>
 
 <style>
-   .lh-Normal{
-       line-height: normal
-   }
-
-   .textTitle{
-        justify-items: center;
-        align-content: center;
-        text-align: center;
-        font-weight: bold;
-        font-size: 15px;
-   }
+  .scoutunitName{
+    position: absolute;
+    top: 33px;
+    transform: rotate(-45deg);
+    font-weight: 900;
+    left: 20px;
+    color: white !important;
+  }
 </style>
 
 
@@ -96,7 +93,7 @@ if ($member['scout_unit'] == 'أشبال') {
                           <div class="d-flex flex-column align-items-center text-center">
                              <img src="<?=$urlUploads?><?=$member['picture']?>" alt="Admin" class="rounded-circle img-thumbnail" style="width: 100px !important;height: 100px !important;cursor: pointer;" >
                              <div class="mt-3">
-                                <p class="text-secondary mb-1"><?=$scout_unit?></p>
+                                <p class="text-secondary mb-1 scoutunitName"><?=$scout_unit?></p>
                                 <h4><?=$member['first_name'] . ' ' . $member['last_name']?></h4>
                                 <p class="text-muted font-size-sm">رقم المنخرط : <span class="badge badge-info"><?=$member['member_id']?></span></p>
                                 <p class="text-muted font-size-sm">تاريخ الانخراط : <span class="badge badge-info"><?=$member['joining_date']?></span></p>
