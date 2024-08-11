@@ -11,7 +11,7 @@
 
 
     if ($action == 'get_uniforms') {
-        $sql = "SELECT * FROM scout_uniforms";
+        $sql = "SELECT * FROM uniforms";
         $result = DB::query($sql);
     
         $data = array();

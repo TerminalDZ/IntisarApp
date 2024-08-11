@@ -86,10 +86,17 @@ $(document).ready(function () {
 
   GetUniforms();
 
+  function FormatDate(date) {
+    return (
+      date.split(" ")[0].split("-").reverse().join("/") +
+      " (" +
+      date.split(" ")[1].split(":").slice(0, 2).join(":") +
+      ")"
+    );
+  }
+
   function updateTable(uniforms) {
     table.clear();
-
-    console.log(uniforms);
 
     uniforms.forEach((uniform) => {
       table.row.add([
@@ -98,11 +105,18 @@ $(document).ready(function () {
         uniform.uniform_type,
         uniform.size,
         uniform.amount_paid,
-        uniform.paid,
-        uniform.created_at,
+        uniform.paid
+          ? `<span class="badge badge-success">مدفوع</span>`
+          : `<span class="badge badge-danger">غير مدفوع</span>`,
+        FormatDate(uniform.created_at),
+        uniform.note
+          ? `<button class="btn btn-success btn-sm note-uniform btn-sm" data-id="${uniform.id}"><i class="icon-notepad"></i></button>`
+          : `<button class='btn btn-dark btn-sm note-uniform btn-sm'><i class='icon-notepad'></i></button>`,
         `<button class="btn btn-primary btn-sm edit-uniform" data-id="${uniform.id}">تعديل</button>
         <button class="btn btn-danger btn-sm delete-uniform" data-id="${uniform.id}">حذف</button>`,
       ]);
     });
+
+    table.draw();
   }
 });

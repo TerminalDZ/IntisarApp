@@ -14,6 +14,13 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
+                <div class="card-header">
+                  <div class="card-header-right">
+                    <?php if ($add_uniform) { ?>
+                      <a class="btn btn-sm btn-outline-primary" href="/?p=addUniform"> اضافة مستلم زي</a>
+                    <?php } ?>
+                  </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="UniformsTable" class="display table table-striped table-bordered">

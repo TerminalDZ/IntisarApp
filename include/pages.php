@@ -23,6 +23,12 @@
                 $page == 'addUser' && !$add_user ||
                 $page == 'editUser' && (!$show_users || !$edit_user) ||
 
+                //Uniforms
+                $page == 'uniforms' && !$show_uniform ||
+                $page == 'addUniform' && !$add_uniform ||
+                $page == 'editUniform' && (!$show_uniform || !$edit_uniform) ||
+                
+
 
                 //Settings
                 $page == 'settingsSystem' && !$edit_website_settings ||
