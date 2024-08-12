@@ -174,30 +174,7 @@ if ($member == null) {
                             </div>
                             
                            
-                            <div class="col-md-6 mb-3">
-                                <label for="has_scout_uniform">هل لديه زي كشفي <span class="text-danger">*</span></label>
-                                <select class="form-control" id="has_scout_uniform" name="has_scout_uniform" required="">
-                                    <option value="">اختر</option>
-                                    <option value="1" <?= $member['has_scout_uniform'] == 1 ? 'selected' : ''; ?>>نعم</option>
-                                    <option value="0" <?= $member['has_scout_uniform'] == 0 ? 'selected' : ''; ?>>لا</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="scout_uniform_size">مقاس الزي الكشفي</label>
-                                <input class="form-control" id="scout_uniform_size" type="text" name="scout_uniform_size" placeholder="مقاس الزي الكشفي" value="<?= $member['scout_uniform_size']; ?>">
-                            </div>
-
-
-                            <div class="col-md-12 mb-3">
-                                <label for="scout_uniform_payer"> هل منخرط دافع ثمن الزي الكشفي <span class="text-danger">*</span></label>
-                                <select class="form-control" id="scout_uniform_payer" name="scout_uniform_payer" required="">
-                                    <option value="">اختر</option>
-                                    <option value="1" <?= $member['scout_uniform_payer'] == 1 ? 'selected' : ''; ?>>نعم</option>
-                                    <option value="0" <?= $member['scout_uniform_payer'] == 0 ? 'selected' : ''; ?>>لا</option>
-                                </select>
-                            </div>
-
+                         
                             <div class="col-md-12 mb-3">
                                 <label for="scout_unit">الوحدة الكشفية <span class="text-danger">*</span></label>
                                 <select class="form-control" id="scout_unit" name="scout_unit" required="">

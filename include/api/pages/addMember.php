@@ -62,9 +62,7 @@
         $phone_number = $_POST['phone_number'];
         $address = $_POST['address'];
        
-        $has_scout_uniform = $_POST['has_scout_uniform'];
-        $scout_uniform_size = $_POST['scout_uniform_size'];
-        $scout_uniform_payer = $_POST['scout_uniform_payer'];
+
         $scout_unit = $_POST['scout_unit'];
         ////
         if (isset($_FILES['picture'])) {
@@ -76,7 +74,7 @@
 
 
 
-        if ($member_id == '' || $first_name == '' || $last_name == '' || $gender == '' || $dob == ''|| $place_of_increase == '' || $father_name == '' || $mother_name == '' || $mother_last_name == '' || $job_father == '' || $job_mother == '' || $family_status == '' || $living_condition == '' || $guardian_id_number == '' || $phone_number == '' || $address == '' || $has_scout_uniform == '' || $scout_uniform_payer == '' || $scout_unit == '' || $joining_date == '') {
+        if ($member_id == '' || $first_name == '' || $last_name == '' || $gender == '' || $dob == ''|| $place_of_increase == '' || $father_name == '' || $mother_name == '' || $mother_last_name == '' || $job_father == '' || $job_mother == '' || $family_status == '' || $living_condition == '' || $guardian_id_number == '' || $phone_number == '' || $address == '' || $scout_unit == '' || $joining_date == '') {
             echo json_encode(array('status' => 'error', 'message' => 'جميع الحقول مطلوبة'));
             die();
         }
@@ -140,9 +138,7 @@
             'phone_number' => $phone_number,
             'address' => $address,
 
-            'has_scout_uniform' => $has_scout_uniform,
-            'scout_uniform_size' => $scout_uniform_size,
-            'scout_uniform_payer' => $scout_uniform_payer,
+           
             'scout_unit' => $scout_unit,
             'picture' => $picture,
             'added_by' => $profile['id'],
@@ -235,9 +231,7 @@
         $phone_number = $_POST['phone_number'];
         $address = $_POST['address'];
     
-        $has_scout_uniform = $_POST['has_scout_uniform'];
-        $scout_uniform_size = $_POST['scout_uniform_size'];
-        $scout_uniform_payer = $_POST['scout_uniform_payer'];
+
         $scout_unit = $_POST['scout_unit'];
         ////
         if (isset($_FILES['picture'])) {
@@ -249,7 +243,7 @@
 
 
 
-        if ($member_id == '' || $first_name == '' || $last_name == '' || $gender == '' || $dob == ''|| $place_of_increase == '' || $father_name == '' || $mother_name == '' || $mother_last_name == '' || $job_father == '' || $job_mother == '' || $family_status == '' || $living_condition == '' || $guardian_id_number == '' || $phone_number == '' || $address == '' || $has_scout_uniform == '' || $scout_uniform_payer == '' || $scout_unit == '' || $joining_date == '') {
+        if ($member_id == '' || $first_name == '' || $last_name == '' || $gender == '' || $dob == ''|| $place_of_increase == '' || $father_name == '' || $mother_name == '' || $mother_last_name == '' || $job_father == '' || $job_mother == '' || $family_status == '' || $living_condition == '' || $guardian_id_number == '' || $phone_number == '' || $address == '' || $scout_unit == '' || $joining_date == '') {
             echo json_encode(array('status' => 'error', 'message' => 'جميع الحقول مطلوبة'));
             die();
         }
@@ -309,9 +303,6 @@
                 'phone_number' => $phone_number,
                 'address' => $address,
              
-                'has_scout_uniform' => $has_scout_uniform,
-                'scout_uniform_size' => $scout_uniform_size,
-                'scout_uniform_payer' => $scout_uniform_payer,
                 'scout_unit' => $scout_unit,
                 'picture' => $picture,
                 'last_modified_by' => $profile['id'],

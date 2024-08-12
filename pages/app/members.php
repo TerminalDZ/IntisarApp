@@ -66,8 +66,9 @@
                                 $filteredMembers = array_filter($members, function($member) use ($filterGender, $filterScoutUnit, $filterInsurance, $filterInsurancePaid) {
                                     $genderMatch = $filterGender == '' || $member['gender'] == $filterGender;
                                     $scoutUnitMatch = $filterScoutUnit == '' || $member['scout_unit'] == $filterScoutUnit;
-                                    
-                                    $insuranceResult = DB::query('SELECT * FROM insurances WHERE member_id = '.$member['member_id'].' AND year = '.date('Y').' LIMIT 1');
+                                    $member_id = intval($member['member_id']);
+
+                                    $insuranceResult = DB::query('SELECT * FROM insurances WHERE member_id = '.$member_id.' AND year = '.date('Y').' LIMIT 1');
                                     $hasInsurance = $insuranceResult->num_rows > 0;
                                     $insuranceMatch = $filterInsurance == '' || ($filterInsurance == '1' && $hasInsurance) || ($filterInsurance == '0' && !$hasInsurance);
                                 
@@ -81,7 +82,8 @@
 
                                 
                                 foreach ($filteredMembers as $member) {
-                                    $InsuranceResult = DB::query('SELECT * FROM insurances WHERE member_id = '.$member['member_id'].' AND year = '.date('Y').' LIMIT 1');
+                                    $member_id = intval($member['member_id']);
+                                    $InsuranceResult = DB::query('SELECT * FROM insurances WHERE member_id = '.$member_id.' AND year = '.date('Y').' LIMIT 1');
                                     $insurance = $InsuranceResult->fetch_assoc();
                                     
                                     ?>
@@ -163,7 +165,7 @@
                                         <td>
 
                                             <?php 
-                                            if ($member['has_scout_uniform'] == 1) {
+                                            if (true) {
                                                 echo '<span class="badge badge-success">نعم</span>';
                                             } else {
                                                 echo '<span class="badge badge-danger">لا</span>';
@@ -174,7 +176,7 @@
                                         <td>
 
                                             <?php 
-                                            if ($member['scout_uniform_payer'] == 1) {
+                                            if (true) {
                                                 echo '<span class="badge badge-success">نعم</span>';
                                             } else {
                                                 echo '<span class="badge badge-danger">لا</span>';

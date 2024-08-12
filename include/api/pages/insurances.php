@@ -264,7 +264,7 @@
 
         $member_id = $_POST['member_id'];
 
-        $data = DB::select('members', "member_id = '$member_id' AND archiv = 0", 'member_id , scout_unit')->fetch_assoc();
+        $data = DB::select('members', "member_id = '$member_id' AND archiv = 0")->fetch_assoc();
 
         if ($data == null) {
             echo json_encode(array('status' => 'error', 'message' => 'العضو غير موجود'));

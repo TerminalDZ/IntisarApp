@@ -14,17 +14,20 @@
             <div class="card">
                 <div class="card-header">
                     <h5>اضافة زي جديد</h5>
+                    <div class="card-header-right">
+                       <button type="button" class="btn btn-primary" id="scanQR">ماسح QR</button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form id="addUniformForm">
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="inputState"> أدخل رقم المنخرط</label>
-                                <input type="text" class="form-control" id="member_idInput"> 
+                                <label for="inputState"> أدخل رقم المنخرط <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="member_idInput" placeholder="أدخل رقم المنخرط">
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="inputState">المنخرط</label>
+                                <label for="inputState">المنخرط<span class="text-danger">*</span></label>
                                 <select id="member_idSelect" class="form-control">
                                    
                                 </select>
@@ -32,8 +35,9 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="inputState">الزي</label>
+                                <label for="inputState">الزي<span class="text-danger">*</span></label>
                                 <select id="uniform_select" class="form-control">
+                                    <option value="" selected>اختر...</option>
                                     <option value="قميص">قميص</option>
                                     <option value="شارة">شارة</option>
                                     <option value="منديل">منديل</option>
@@ -44,8 +48,8 @@
                             </div>
                         
                             <div class="form-group col-md-6">
-                                <label for="inputState">الحجم</label>
-                                <select id="size" class="form-control">
+                                <label for="inputState">الحجم<span class="text-danger">*</span></label>
+                                <select id="uniform_size" class="form-control">
                                     <option value="" selected>اختر...</option>
                                     <option value="XS">XS</option>
                                     <option value="S">S</option>
@@ -83,13 +87,13 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="inputState">السعر</label>
-                                <input type="text" class="form-control" id="price">
+                                <label for="inputState">السعر<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="uniform_price" placeholder="أدخل السعر">
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="inputState">مدفوع</label>
-                                <select id="paid" class="form-control">
+                                <label for="inputState">مدفوع<span class="text-danger">*</span></label>
+                                <select id="uniform_paid" class="form-control">
                                     <option value="" selected>اختر...</option>
                                     <option value="1">نعم</option>
                                     <option value="0">لا</option>
@@ -97,9 +101,9 @@
 
                             </div>
 
-                            <div class="form-group col-md-6">
-                                <label for="inputState">المستلم</label>
-                                <select id="received" class="form-control">
+                            <div class="form-group col-md-12">
+                                <label for="inputState">المستلم<span class="text-danger">*</span></label>
+                                <select id="uniform_received" class="form-control">
                                     <option value="" selected>اختر...</option>
                                     <option value="1">نعم</option>
                                     <option value="0">لا</option>
@@ -107,14 +111,14 @@
 
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label for="inputState">الملاحظات</label>
-                                <textarea class="form-control" id="notes" rows="3"></textarea>
+                                <textarea class="form-control" id="uniform_notes" rows="3" placeholder="أدخل الملاحظات"></textarea>
                             </div>
 
                         </div>
 
-                        <button type="button" class="btn btn-primary" id="addUniform">اضافة وبقاء في الصفحة</button>
+                        <button type="button" class="btn btn-success" id="addUniform">اضافة وبقاء في الصفحة</button>
 
                         <button type="button" class="btn btn-primary" id="addUniformAndReturn">اضافة و عودة</button>
 
