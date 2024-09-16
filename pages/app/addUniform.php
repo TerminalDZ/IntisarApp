@@ -1,135 +1,65 @@
 <div class="container-fluid">
-   <div class="page-header">
-      <div class="row">
-         <div class="col-lg-6 main-header">
-            <h2> اضافة زي جديد</h2>
-          </div>
-        </div>
-    </div>
+	<div class="page-header">
+		<div class="row">
+			<div class="col-lg-6 main-header">
+				<h2> اضافة زي جديد</h2>
+			</div>
+		</div>
+	</div>
 </div>
-
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>اضافة زي جديد</h5>
-                    <div class="card-header-right">
-                       <button type="button" class="btn btn-primary" id="scanQR">ماسح QR</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <form id="addUniformForm">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="inputState"> أدخل رقم المنخرط <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="member_idInput" placeholder="أدخل رقم المنخرط">
-                            </div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<h5>اضافة زي جديد</h5>
+					<div class="card-header-right">
+						<button type="button" class="btn btn-primary" id="scanQR">ماسح QR</button>
+					</div>
+				</div>
+				<div class="card-body">
+					<form id="addUniformForm">
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="inputState"> أدخل رقم المنخرط <span class="text-danger">*</span></label>
+								<input type="text" class="form-control" id="member_idInput" placeholder="أدخل رقم المنخرط">
+							</div>
+							<div class="form-group col-md-6">
+								<label for="inputState">المنخرط<span class="text-danger">*</span></label>
+								<select id="member_idSelect" class="form-control">
+								</select>
+							</div>
+							<hr>
+							<div class="col-12 TableAddUniform d-none">
+								<table  class="table table-bordered" id="uniformsTable">
+									<thead>
+										<tr>
+											<th>الزي</th>
+											<th>الحجم</th>
+											<th>السعر</th>
+											<th>مدفوع</th>
+											<th>المستلم</th>
+											<th>الملاحظات</th>
+											<th>حذف</th>
+										</tr>
+									</thead>
+									<tbody>
+                                        <tr>
+                                            <td colspan="7">
+                                               <button type="button" class="btn btn-success addRow"><i class="fa fa-plus"></i></button>
+                                            </td>
 
-                            <div class="form-group col-md-6">
-                                <label for="inputState">المنخرط<span class="text-danger">*</span></label>
-                                <select id="member_idSelect" class="form-control">
-                                   
-                                </select>
 
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="inputState">الزي<span class="text-danger">*</span></label>
-                                <select id="uniform_select" class="form-control">
-                                    <option value="" selected>اختر...</option>
-                                    <option value="قميص">قميص</option>
-                                    <option value="شارة">شارة</option>
-                                    <option value="منديل">منديل</option>
-                                    <option value="قبعة">قبعة</option>
-                                    <option value="سترة">سترة</option>
-                                    <option value="سروال">سروال</option>
-                                </select>
-                            </div>
-                        
-                            <div class="form-group col-md-6">
-                                <label for="inputState">الحجم<span class="text-danger">*</span></label>
-                                <select id="uniform_size" class="form-control">
-                                    <option value="" selected>اختر...</option>
-                                    <option value="XS">XS</option>
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="XXL">XXL</option>
-                                    <option value="XXXL">XXXL</option>
-                                    <option value="2">2</option>
-                                    <option value="4">4</option>
-                                    <option value="6">6</option>
-                                    <option value="8">8</option>
-                                    <option value="10">10</option>
-                                    <option value="12">12</option>
-                                    <option value="14">14</option>
-                                    <option value="16">16</option>
-                                    <option value="18">18</option>
-                                    <option value="20">20</option>
-                                    <option value="22">22</option>
-                                    <option value="24">24</option>
-                                    <option value="26">26</option>
-                                    <option value="28">28</option>
-                                    <option value="30">30</option>
-                                    <option value="32">32</option>
-                                    <option value="34">34</option>
-                                    <option value="36">36</option>
-                                    <option value="38">38</option>
-                                    <option value="40">40</option>
-                                    <option value="42">42</option>
-                                    <option value="44">44</option>
-                                    <option value="46">46</option>
-                                    <option value="48">48</option>
-                                    <option value="50">50</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="inputState">السعر<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="uniform_price" placeholder="أدخل السعر">
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="inputState">مدفوع<span class="text-danger">*</span></label>
-                                <select id="uniform_paid" class="form-control">
-                                    <option value="" selected>اختر...</option>
-                                    <option value="1">نعم</option>
-                                    <option value="0">لا</option>
-                                </select>
-
-                            </div>
-
-                            <div class="form-group col-md-12">
-                                <label for="inputState">المستلم<span class="text-danger">*</span></label>
-                                <select id="uniform_received" class="form-control">
-                                    <option value="" selected>اختر...</option>
-                                    <option value="1">نعم</option>
-                                    <option value="0">لا</option>
-                                </select>
-
-                            </div>
-
-                            <div class="form-group col-md-12">
-                                <label for="inputState">الملاحظات</label>
-                                <textarea class="form-control" id="uniform_notes" rows="3" placeholder="أدخل الملاحظات"></textarea>
-                            </div>
-
-                        </div>
-
-                        <button type="button" class="btn btn-success" id="addUniform">اضافة وبقاء في الصفحة</button>
-
-                        <button type="button" class="btn btn-primary" id="addUniformAndReturn">اضافة و عودة</button>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
+                                        </tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+				
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

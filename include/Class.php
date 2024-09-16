@@ -638,6 +638,13 @@ class DB
         return $result;
     }
 
+    public static function get_last_id()
+    {
+        global $db;
+
+        return $db->insert_id;
+    }
+
 
     public static function Count($table, $where = null) {
         global $db;
