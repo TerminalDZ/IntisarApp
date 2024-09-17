@@ -31,7 +31,7 @@
 							</div>
 							<hr>
 							<div class="col-12 TableAddUniform d-none">
-								<table  class="table table-bordered" id="uniformsTable">
+								<table  class="table table-bordered table-responsive-md table-striped text-center " id="uniformsTable">
 									<thead>
 										<tr>
 											<th>الزي</th>

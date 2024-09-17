@@ -110,13 +110,19 @@ $(document).ready(function () {
           : `<span class="badge badge-danger">غير مدفوع</span>`,
         FormatDate(uniform.created_at),
         uniform.note
-          ? `<button class="btn btn-success btn-sm note-uniform btn-sm" data-id="${uniform.id}"><i class="icon-notepad"></i></button>`
-          : `<button class='btn btn-dark btn-sm note-uniform btn-sm'><i class='icon-notepad'></i></button>`,
-        `<button class="btn btn-primary btn-sm edit-uniform" data-id="${uniform.id}">تعديل</button>
-        <button class="btn btn-danger btn-sm delete-uniform" data-id="${uniform.id}">حذف</button>`,
+          ? `<button class="btn btn-success btn-sm note-uniform btn-sm" data-id="${uniform.id}" data-note="${uniform.note}"><i class="icon-notepad"></i></button>`
+          : `<button class='btn btn-dark btn-sm btn-sm'><i class='icon-notepad'></i></button>`,
       ]);
     });
 
     table.draw();
   }
+
+  $(document).on("click", ".note-uniform", function () {
+    swal({
+      title: "ملاحظة",
+      text: $(this).data("note"),
+      icon: "info",
+    });
+  });
 });
