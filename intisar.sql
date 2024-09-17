@@ -33,7 +33,7 @@ CREATE TABLE `algeria_cities` (
   `daira_name` varchar(255) NOT NULL,
   `wilaya_code` varchar(4) NOT NULL,
   `wilaya_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `algeria_cities`
@@ -1604,7 +1604,7 @@ CREATE TABLE `insurances` (
   `paid` tinyint(1) NOT NULL DEFAULT '0',
   `updated_at_paid` varchar(50) DEFAULT NULL,
   `archiv` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `insurances`
@@ -1734,7 +1734,7 @@ INSERT INTO `members` (`id`, `member_id`, `first_name`, `last_name`, `gender`, `
 CREATE TABLE `permissions` (
   `id` int NOT NULL,
   `permission_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `permissions`
@@ -1773,7 +1773,7 @@ INSERT INTO `permissions` (`id`, `permission_name`) VALUES
 CREATE TABLE `roles` (
   `id` int NOT NULL,
   `role_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `roles`
@@ -1793,7 +1793,7 @@ INSERT INTO `roles` (`id`, `role_name`) VALUES
 CREATE TABLE `role_permissions` (
   `role_id` int NOT NULL,
   `permission_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `role_permissions`
@@ -1939,7 +1939,7 @@ INSERT INTO `users` (`id`, `fr_name`, `ls_name`, `username`, `email`, `bio`, `av
 CREATE TABLE `user_roles` (
   `user_id` int NOT NULL,
   `role_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_roles`

@@ -49,10 +49,18 @@
                                         <td>" . ($i + 1) . "#</td>
                                         <td>" . htmlspecialchars($role['role_name']) . "</td>
                                         <td>$permissionBadges</td>
-                                        <td>
-                                            <button type='button' class='btn btn-primary btn-sm EditRole' data-role-id='{$role['id']}'>تعديل</button>
-                                            <button type='button' class='btn btn-danger btn-sm DeleteRole' data-role-id='{$role['id']}'>حذف</button>
-                                        </td>
+                                        ";
+                                        if ($role['id'] == 1) {
+                                            echo "<td>
+                                                <s[an class='badge badge-warning'>لا يمكن التعديل او الحذف</span>
+                                            </td>";
+                                        } else {
+                                            echo "<td>
+                                                <button type='button' class='btn btn-primary btn-sm EditRole' data-role-id='{$role['id']}'>تعديل</button>
+                                                <button type='button' class='btn btn-danger btn-sm DeleteRole' data-role-id='{$role['id']}'>حذف</button>
+                                            </td>";
+                                        }
+                                    echo "
                                     </tr>";
                                 }
                                 ?>
