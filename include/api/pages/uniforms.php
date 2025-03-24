@@ -5,169 +5,314 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$action = $_GET['action'];
 
-if ($action == 'get_uniforms') {
-    $sql = "SELECT * FROM uniforms";
-    $result = DB::query($sql);
+// Redirect if no view permission
+if (!$show_uniform) {
+    echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية لعرض الأزياء الكشفية']);
+    exit();
+}
 
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $member_id = $row['member_id'];
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+if (empty($action) && isset($_POST['action'])) {
+    $action = $_POST['action'];
+}
 
-        $member_data = DB::select('members', "member_id = '$member_id'", 'first_name, last_name')->fetch_assoc();
+/**
+ * Get all uniforms grouped by member
+ */
+if ($action == 'get_uniforms' || $action == 'getUniforms') {
+    try {
+        // Join with members table to get complete information
+        $sql = "SELECT u.*, m.first_name, m.last_name 
+                FROM uniforms u 
+                JOIN members m ON u.member_id = m.member_id 
+                WHERE m.archiv = 0
+                ORDER BY u.created_at DESC";
+        
+        $result = DB::query($sql);
 
-        $row['member'] = [
-            'first_name' => $member_data['first_name'],
-            'last_name' => $member_data['last_name'],
-        ];
+        if (!$result) {
+            throw new Exception("Error executing query: " . $db->error);
+        }
 
-        $data[] = $row;
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $member_id = $row['member_id'];
+
+            // Group by member_id
+            if (isset($data[$member_id])) {
+                $data[$member_id]['uniforms'][] = [
+                    'id' => $row['id'],
+                    'uniform_type' => $row['uniform_type'],
+                    'size' => $row['size'],
+                    'amount_paid' => $row['amount_paid'],
+                    'payment_date' => $row['payment_date'],
+                    'paid' => $row['paid'],
+                    'received' => $row['received'],
+                    'note' => $row['note'],
+                    'created_at' => $row['created_at'],
+                    'updated_at' => $row['updated_at'],
+                ];
+            } else {
+                $data[$member_id] = [
+                    'member' => [
+                        'member_id' => $member_id,
+                        'first_name' => $row['first_name'],
+                        'last_name' => $row['last_name'],
+                    ],
+                    'uniforms' => [
+                        [
+                            'id' => $row['id'],
+                            'uniform_type' => $row['uniform_type'],
+                            'size' => $row['size'],
+                            'amount_paid' => $row['amount_paid'],
+                            'payment_date' => $row['payment_date'],
+                            'paid' => $row['paid'],
+                            'received' => $row['received'],
+                            'note' => $row['note'],
+                            'created_at' => $row['created_at'],
+                            'updated_at' => $row['updated_at'],
+                        ]
+                    ]
+                ];
+            }
+        }
+
+        // Convert associative array to indexed array for DataTables
+        $formatted_data = array_values($data);
+
+        echo json_encode([
+            'status' => 'success', 
+            'message' => 'تم جلب البيانات بنجاح', 
+            'data' => $formatted_data,
+            'recordsTotal' => count($formatted_data),
+            'recordsFiltered' => count($formatted_data)
+        ]);
+        
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء جلب البيانات: ' . $e->getMessage()]);
     }
+}
 
-    if (empty($data)) {
-        echo json_encode(['status' => 'error', 'message' => 'No data found']);
+/**
+ * Search for members to add uniforms
+ */
+elseif ($action == 'GetMembers') {
+    if (!$add_uniform) {
+        echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية']);
         exit();
     }
 
-    echo json_encode(['status' => 'success', 'message' => 'Data fetched successfully', 'data' => $data]);
-} elseif ($action == 'GetMembers') {
-    if (!$add_uniform) {
-        echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية']);
-        return;
-    }
+    try {
+        $q = isset($_GET['q']) ? $db->real_escape_string($_GET['q']) : '';
 
-    $q = $_GET['q'];
-
-    $where = "first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR member_id LIKE '%$q%'";
-    $data = DB::select('members', $where, 'member_id, first_name, last_name');
-
-    $members = [];
-    while ($row = $data->fetch_assoc()) {
-        $members[] = [
-            'member_id' => $row['member_id'],
-            'first_name' => $row['first_name'],
-            'last_name' => $row['last_name'],
-        ];
-    }
-
-    echo json_encode(['status' => 'success', 'message' => 'تم جلب الأعضاء بنجاح', 'members' => $members]);
-} elseif ($action == 'GetMembersByMemberId') {
-    $member_id = $_POST['member_id'];
-
-    $data = DB::select('members', "member_id = '$member_id' AND archiv = 0")->fetch_assoc();
-
-    if ($data == null) {
-        echo json_encode(['status' => 'error', 'message' => 'العضو غير موجود']);
-        die();
-    }
-
-    echo json_encode(['status' => 'success', 'message' => 'تم جلب العضو بنجاح', 'member' => $data]);
-} elseif ($action == 'AddUniform') {
-    if (!$add_uniform) {
-        echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية']);
-        return;
-    }
-
-    $member_id = $_POST['member_id'];
-
-    $uniform_id = $_POST['uniform_id'];
-
-    $uniform_type = $_POST['uniform_type'];
-    $size = $_POST['uniform_size'];
-    $amount_paid = $_POST['uniform_price'];
-    $paid = $_POST['uniform_paid'];
-    $received = $_POST['uniform_received'];
-    $note = $_POST['uniform_notes'];
-
-    if ($member_id == '' || $uniform_type == '' || $size == '' || $amount_paid == '' || $paid == '' || $received == '') {
-        echo json_encode(['status' => 'error', 'message' => 'الرجاء ملء جميع الحقول']);
-        return;
-    }
-
-    $check_member = DB::query("SELECT COUNT(*) AS count FROM members WHERE member_id = '$member_id' AND archiv = 0")->fetch_assoc();
-    if ($check_member['count'] == 0) {
-        echo json_encode(['status' => 'error', 'message' => 'العضو غير موجود']);
-        return;
-    }
-
-    $data = [
-        'member_id' => $member_id,
-        'uniform_type' => $uniform_type,
-        'size' => $size,
-        'amount_paid' => $amount_paid,
-        'payment_date' => date('Y-m-d'),
-        'paid' => $paid,
-        'received' => $received,
-        'note' => $note,
-    ];
-
-    if ($uniform_id != '') {
-        if (!$edit_uniform) {
-            echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية']);
-            return;
+        if (empty($q)) {
+            echo json_encode(['status' => 'error', 'message' => 'الرجاء إدخال كلمة البحث']);
+            exit();
         }
 
-        $result = DB::update('uniforms', $data, "id = '$uniform_id'");
-        if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'تم التعديل بنجاح']);
+        $where = "archiv = 0 AND (first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR member_id LIKE '%$q%')";
+        $result = DB::select('members', $where, 'member_id, first_name, last_name');
+
+        $members = [];
+        while ($row = $result->fetch_assoc()) {
+            $members[] = [
+                'id' => $row['member_id'],
+                'text' => $row['member_id'] . ' - ' . $row['first_name'] . ' ' . $row['last_name']
+            ];
+        }
+
+        echo json_encode([
+            'status' => 'success', 
+            'message' => 'تم جلب الأعضاء بنجاح', 
+            'results' => $members,
+            'pagination' => ['more' => false]
+        ]);
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء جلب الأعضاء: ' . $e->getMessage()]);
+    }
+} 
+
+/**
+ * Get member details by ID
+ */
+elseif ($action == 'GetMembersByMemberId') {
+    try {
+        $member_id = isset($_POST['member_id']) ? $db->real_escape_string($_POST['member_id']) : '';
+
+        if (empty($member_id)) {
+            echo json_encode(['status' => 'error', 'message' => 'معرف العضو مطلوب']);
+            exit();
+        }
+
+        $data = DB::select('members', "member_id = '$member_id' AND archiv = 0")->fetch_assoc();
+
+        if (!$data) {
+            echo json_encode(['status' => 'error', 'message' => 'العضو غير موجود']);
+            exit();
+        }
+
+        echo json_encode(['status' => 'success', 'message' => 'تم جلب العضو بنجاح', 'member' => $data]);
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء جلب بيانات العضو: ' . $e->getMessage()]);
+    }
+} 
+
+/**
+ * Add or update uniform record
+ */
+elseif ($action == 'AddUniform') {
+    try {
+        // Check permissions
+        if (isset($_POST['uniform_id']) && !empty($_POST['uniform_id'])) {
+            if (!$edit_uniform) {
+                echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية لتعديل الأزياء']);
+                exit();
+            }
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء التعديل']);
+            if (!$add_uniform) {
+                echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية لإضافة الأزياء']);
+                exit();
+            }
         }
-        return;
-    } else {
-        $result = DB::insert('uniforms', $data);
 
-        $last_id = DB::get_last_id();
+        // Validate input data
+        $member_id = isset($_POST['member_id']) ? $db->real_escape_string($_POST['member_id']) : '';
+        $uniform_id = isset($_POST['uniform_id']) ? $db->real_escape_string($_POST['uniform_id']) : '';
+        $uniform_type = isset($_POST['uniform_type']) ? $db->real_escape_string($_POST['uniform_type']) : '';
+        $size = isset($_POST['uniform_size']) ? $db->real_escape_string($_POST['uniform_size']) : '';
+        $amount_paid = isset($_POST['uniform_price']) ? $db->real_escape_string($_POST['uniform_price']) : '';
+        $paid = isset($_POST['uniform_paid']) ? $db->real_escape_string($_POST['uniform_paid']) : '';
+        $received = isset($_POST['uniform_received']) ? $db->real_escape_string($_POST['uniform_received']) : '';
+        $note = isset($_POST['uniform_notes']) ? $db->real_escape_string($_POST['uniform_notes']) : '';
+
+        // Basic validation
+        if (empty($member_id) || empty($uniform_type) || empty($size) || $amount_paid === '' || $paid === '' || $received === '') {
+            echo json_encode(['status' => 'error', 'message' => 'الرجاء ملء جميع الحقول المطلوبة']);
+            exit();
+        }
+
+        // Verify member exists
+        $check_member = DB::query("SELECT COUNT(*) AS count FROM members WHERE member_id = '$member_id' AND archiv = 0")->fetch_assoc();
+        if ($check_member['count'] == 0) {
+            echo json_encode(['status' => 'error', 'message' => 'العضو غير موجود']);
+            exit();
+        }
+
+        // Prepare data for database operation
+        $data = [
+            'member_id' => $member_id,
+            'uniform_type' => $uniform_type,
+            'size' => $size,
+            'amount_paid' => $amount_paid,
+            'payment_date' => date('Y-m-d'),
+            'paid' => $paid,
+            'received' => $received,
+            'note' => $note,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        // Update or insert based on uniform_id
+        if (!empty($uniform_id)) {
+            // Update existing record
+            $result = DB::update('uniforms', $data, "id = '$uniform_id'");
+            $message = 'تم تعديل بيانات الزي بنجاح';
+        } else {
+            // Add created_at for new records
+            $data['created_at'] = date('Y-m-d H:i:s');
+            
+            // Insert new record
+            $result = DB::insert('uniforms', $data);
+            $uniform_id = DB::get_last_id();
+            $message = 'تمت إضافة الزي بنجاح';
+        }
 
         if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'تمت الإضافة بنجاح', 'uniform_id' => $last_id]);
+            echo json_encode(['status' => 'success', 'message' => $message, 'uniform_id' => $uniform_id]);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء الإضافة']);
+            throw new Exception("فشل في تنفيذ عملية قاعدة البيانات");
         }
-        return;
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء معالجة طلبك: ' . $e->getMessage()]);
     }
-} elseif ($action == 'DeleteUniform'){
-    if (!$delete_uniform) {
-        echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية للقيام بهذه العملية']);
-        return;
+} 
+
+/**
+ * Delete uniform record
+ */
+elseif ($action == 'DeleteUniform') {
+    try {
+        if (!$delete_uniform) {
+            echo json_encode(['status' => 'error', 'message' => 'ليس لديك الصلاحية لحذف الأزياء']);
+            exit();
+        }
+
+        $uniform_id = isset($_POST['uniform_id']) ? $db->real_escape_string($_POST['uniform_id']) : '';
+
+        if (empty($uniform_id)) {
+            echo json_encode(['status' => 'error', 'message' => 'معرف الزي مطلوب']);
+            exit();
+        }
+
+        $result = DB::delete('uniforms', "id = '$uniform_id'");
+
+        if ($result) {
+            echo json_encode(['status' => 'success', 'message' => 'تم حذف الزي بنجاح']);
+        } else {
+            throw new Exception("فشل في تنفيذ عملية قاعدة البيانات");
+        }
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء حذف الزي: ' . $e->getMessage()]);
     }
+}
 
-    $uniform_id = $_POST['uniform_id'];
+/**
+ * Get uniforms by member ID
+ */
+elseif ($action == 'GetUniformByMemberId') {
+    try {
+        $member_id = isset($_POST['member_id']) ? $db->real_escape_string($_POST['member_id']) : '';
 
-    $result = DB::delete('uniforms', "id = '$uniform_id'");
+        if (empty($member_id)) {
+            echo json_encode(['status' => 'error', 'message' => 'معرف العضو مطلوب']);
+            exit();
+        }
 
-    if ($result) {
-        echo json_encode(['status' => 'success', 'message' => 'تم الحذف بنجاح']);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء الحذف']);
+        $data = DB::select('uniforms', "member_id = '$member_id'");
+        
+        if ($data->num_rows == 0) {
+            echo json_encode(['status' => 'info', 'message' => 'لا يوجد زي مسجل لهذا العضو']);
+            exit();
+        }
+
+        $uniforms = [];
+        while ($row = $data->fetch_assoc()) {
+            $uniforms[] = [
+                'uniform_id' => $row['id'],
+                'uniform_type' => $row['uniform_type'],
+                'size' => $row['size'],
+                'amount_paid' => $row['amount_paid'],
+                'payment_date' => $row['payment_date'],
+                'paid' => $row['paid'],
+                'received' => $row['received'],
+                'note' => $row['note'],
+                'created_at' => $row['created_at'],
+                'updated_at' => $row['updated_at'],
+            ];
+        }
+
+        echo json_encode(['status' => 'success', 'message' => 'تم جلب بيانات الزي بنجاح', 'uniform' => $uniforms]);
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'حدث خطأ أثناء جلب بيانات الزي: ' . $e->getMessage()]);
     }
-
-
-
-}elseif ($action == 'GetUniformByMemberId') {
-    $member_id = $_POST['member_id'];
-
-    $data = DB::select('uniforms', "member_id = '$member_id'");
-    if ($data->num_rows == 0) {
-        echo json_encode(['status' => 'error', 'message' => 'لا يوجد زي لهذا العضو']);
-        return;
-    }
-
-    $uniforms = [];
-
-    while ($row = $data->fetch_assoc()) {
-        $uniforms[] = [
-            'uniform_id' => $row['id'],
-            'uniform_type' => $row['uniform_type'],
-            'size' => $row['size'],
-            'amount_paid' => $row['amount_paid'],
-            'payment_date' => $row['payment_date'],
-            'paid' => $row['paid'],
-            'received' => $row['received'],
-            'note' => $row['note'],
-        ];
-    }
-
-    echo json_encode(['status' => 'success', 'message' => 'تم جلب الزي بنجاح', 'uniform' => $uniforms]);
+}
+else {
+    echo json_encode(['status' => 'error', 'message' => 'العملية غير صالحة']);
 }

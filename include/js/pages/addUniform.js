@@ -284,87 +284,62 @@ $(document).ready(function () {
   }
 
   const uniformsTable = $("#uniformsTable");
-
   const RowAdd = ` 
   <tr class="uniformRow">
-											<td>
-												<select class="form-control" name="uniform_type[]">
-													<option value="" selected>اختر...</option>
-													<option value="قميص">قميص</option>
-													<option value="شارة">شارة</option>
-													<option value="منديل">منديل</option>
-													<option value="قبعة">قبعة</option>
-													<option value="سترة">سترة</option>
-													<option value="سروال">سروال</option>
-												</select>
-											</td>
-											<td>
-												<select class="form-control" name="uniform_size[]">
-													<option value="" selected>اختر...</option>
-													<option value="XS">XS</option>
-													<option value="S">S</option>
-													<option value="M">M</option>
-													<option value="L">L</option>
-													<option value="XL">XL</option>
-													<option value="XXL">XXL</option>
-													<option value="XXXL">XXXL</option>
-													<option value="2">2</option>
-													<option value="4">4</option>
-													<option value="6">6</option>
-													<option value="8">8</option>
-													<option value="10">10</option>
-													<option value="12">12</option>
-													<option value="14">14</option>
-													<option value="16">16</option>
-													<option value="18">18</option>
-													<option value="20">20</option>
-													<option value="22">22</option>
-													<option value="24">24</option>
-													<option value="26">26</option>
-													<option value="28">28</option>
-													<option value="30">30</option>
-													<option value="32">32</option>
-													<option value="34">34</option>
-													<option value="36">36</option>
-													<option value="38">38</option>
-													<option value="40">40</option>
-													<option value="42">42</option>
-													<option value="44">44</option>
-													<option value="46">46</option>
-													<option value="48">48</option>
-													<option value="50">50</option>
-												</select>
-											</td>
-											<td>
-												<input type="text" class="form-control" name="uniform_price[]" placeholder="أدخل السعر">
-											</td>
-											<td>
-												<select class="form-control" name="uniform_paid[]">
-													<option value="" selected>اختر...</option>
-													<option value="1">نعم</option>
-													<option value="0">لا</option>
-												</select>
-											</td>
-											<td>
-												<select class="form-control" name="uniform_received[]">
-													<option value="" selected>اختر...</option>
-													<option value="1">نعم</option>
-													<option value="0">لا</option>
-												</select>
-											</td>
-											<td>
-												<textarea class="form-control" name="uniform_notes[]" rows="1" placeholder="أدخل الملاحظات"></textarea>
-											</td>
-											<td>
-												<button type="button" class="btn btn-danger removeRow"><i class="fa fa-trash"></i></button>
-                        <button type="button" class="btn btn-success SaveRow"><i class="fa fa-save"></i></button>
-                        <button type="button" class="btn btn-primary EditRow d-none"><i class="fa fa-edit"></i></button>
-											</td>
-										</tr>
+    <td>
+      <select class="form-control" name="uniform_type[]">
+        <option value="" selected>اختر...</option>
+        <option value="قميص">قميص</option>
+        <option value="شارة">شارة</option>
+        <option value="منديل">منديل</option>
+        <option value="قبعة">قبعة</option>
+        <option value="سترة">سترة</option>
+        <option value="سروال">سروال</option>
+      </select>
+    </td>
+    <td>
+      <select class="form-control" name="uniform_size[]">
+        <option value="" selected>اختر...</option>
+        <option value="XS">XS</option>
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="XXL">XXL</option>
+        <option value="XXXL">XXXL</option>
+        <!-- Add more sizes as needed -->
+      </select>
+    </td>
+    <td>
+      <input type="text" class="form-control" name="uniform_price[]" placeholder="أدخل السعر">
+    </td>
+    <td>
+      <select class="form-control" name="uniform_paid[]">
+        <option value="" selected>اختر...</option>
+        <option value="1">نعم</option>
+        <option value="0">لا</option>
+      </select>
+    </td>
+    <td>
+      <select class="form-control" name="uniform_received[]">
+        <option value="" selected>اختر...</option>
+        <option value="1">نعم</option>
+        <option value="0">لا</option>
+      </select>
+    </td>
+    <td>
+      <textarea class="form-control" name="uniform_notes[]" rows="1" placeholder="أدخل الملاحظات"></textarea>
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger removeRow"><i class="fa fa-trash"></i></button>
+      <button type="button" class="btn btn-success SaveRow"><i class="fa fa-save"></i></button>
+      <button type="button" class="btn btn-primary EditRow d-none"><i class="fa fa-edit"></i></button>
+    </td>
+  </tr>
   `;
 
   $(".addRow").click(function () {
-    uniformsTable.append(RowAdd);
+    $("#uniformsTable tbody").append(RowAdd);
   });
 
   uniformsTable.on("click", ".removeRow", function () {
