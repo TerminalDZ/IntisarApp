@@ -913,6 +913,21 @@ function calculateTotalAmount() {
     $('#newTransactionForm input[name="total_amount"]').val(totalAmount.toFixed(2));
 }
 
+// Auto-calculate total amount in transaction form
+$('#newTransactionForm input[name="quantity"], #newTransactionForm input[name="unit_price"]').on('input', function() {
+    calculateTotalAmount();
+});
+
+// Auto-fill unit price when inventory item is selected
+$('#inventorySelect').on('change', function() {
+    let selectedOption = $(this).find('option:selected');
+    let price = selectedOption.data('price');
+    if (price) {
+        $('#newTransactionForm input[name="unit_price"]').val(price);
+        calculateTotalAmount();
+    }
+});
+
 function editTransaction(id) {
     // Implementation for editing transaction
     console.log('Edit transaction:', id);

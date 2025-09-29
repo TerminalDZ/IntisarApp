@@ -48,6 +48,7 @@
                                         <option value="فقدان">فقدان</option>
                                     </select>
                                     <div class="invalid-feedback">يرجى اختيار نوع المعاملة</div>
+                                    <small class="form-text text-muted">حدد نوع المعاملة التي ترغب في تنفيذها</small>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
@@ -55,6 +56,7 @@
                                     <label for="transaction_date" class="form-label">تاريخ المعاملة <span class="text-danger">*</span></label>
                                     <input type="date" class="form-control" id="transaction_date" name="transaction_date" required>
                                     <div class="invalid-feedback">يرجى إدخال تاريخ المعاملة</div>
+                                    <small class="form-text text-muted">تاريخ تنفيذ المعاملة</small>
                                 </div>
                             </div>
                         </div>
@@ -68,6 +70,7 @@
                                         <option value="">اختر المنخرط</option>
                                     </select>
                                     <div class="invalid-feedback">يرجى اختيار المنخرط</div>
+                                    <small class="form-text text-muted">اختر المنخرط الذي تتعلق به هذه المعاملة</small>
                                 </div>
                             </div>
                         </div>
@@ -81,6 +84,7 @@
                                         <option value="">اختر الصنف</option>
                                     </select>
                                     <div class="invalid-feedback">يرجى اختيار الصنف</div>
+                                    <small class="form-text text-muted">اختر الصنف الذي تتعلق به هذه المعاملة</small>
                                 </div>
                             </div>
                         </div>
@@ -102,6 +106,7 @@
                                     <label for="quantity" class="form-label">الكمية <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
                                     <div class="invalid-feedback">يرجى إدخال كمية صحيحة</div>
+                                    <small class="form-text text-muted">عدد القطع في هذه المعاملة</small>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-12">
@@ -109,18 +114,21 @@
                                     <label for="unit_price" class="form-label">سعر الوحدة <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="unit_price" name="unit_price" step="0.01" min="0" required>
                                     <div class="invalid-feedback">يرجى إدخال سعر الوحدة</div>
+                                    <small class="form-text text-muted">سعر كل قطعة بالدينار الجزائري</small>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="total_amount" class="form-label">المبلغ الإجمالي</label>
                                     <input type="number" class="form-control" id="total_amount" name="total_amount" step="0.01" readonly>
+                                    <small class="form-text text-muted">السعر الإجمالي بعد الخصم</small>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="discount" class="form-label">الخصم</label>
                                     <input type="number" class="form-control" id="discount" name="discount" step="0.01" min="0" value="0">
+                                    <small class="form-text text-muted">قيمة الخصم على المعاملة</small>
                                 </div>
                             </div>
                         </div>
@@ -141,6 +149,7 @@
                                                 <option value="غير مدفوع">غير مدفوع</option>
                                             </select>
                                             <div class="invalid-feedback">يرجى اختيار حالة الدفع</div>
+                                            <small class="form-text text-muted">حالة الدفع لهذه المعاملة</small>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-6 col-sm-12">
@@ -148,6 +157,7 @@
                                             <label for="amount_paid" class="form-label">المبلغ المدفوع</label>
                                             <input type="number" class="form-control" id="amount_paid" name="amount_paid" step="0.01" min="0">
                                             <div class="invalid-feedback">يرجى إدخال المبلغ المدفوع</div>
+                                            <small class="form-text text-muted">المبلغ الذي تم دفعه فعلاً</small>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-12 col-sm-12">
@@ -160,6 +170,7 @@
                                                 <option value="شيك">شيك</option>
                                                 <option value="أخرى">أخرى</option>
                                             </select>
+                                            <small class="form-text text-muted">طريقة استلام المبلغ</small>
                                         </div>
                                     </div>
                                 </div>
@@ -172,6 +183,7 @@
                                 <div class="form-group">
                                     <label for="notes" class="form-label">ملاحظات</label>
                                     <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="أدخل أي ملاحظات إضافية..."></textarea>
+                                    <small class="form-text text-muted">أي معلومات إضافية تتعلق بهذه المعاملة</small>
                                 </div>
                             </div>
                         </div>
@@ -241,6 +253,11 @@
         box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
     }
     
+    .form-control.is-valid, .form-select.is-valid {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+    
     .btn {
         border-radius: 10px;
         padding: 0.75rem 1.5rem;
@@ -299,6 +316,10 @@
     
     .me-1 {
         margin-left: 0.25rem !important;
+    }
+    
+    .form-text {
+        font-size: 0.8rem;
     }
     
     @media (max-width: 768px) {

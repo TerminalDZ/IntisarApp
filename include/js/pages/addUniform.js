@@ -15,19 +15,32 @@ function initializeForm() {
     $('#member_id').select2({
         placeholder: 'اختر المنخرط',
         allowClear: true,
-        width: '100%'
+        width: '100%',
+        language: {
+            noResults: function() {
+                return "لم يتم العثور على نتائج";
+            }
+        }
     });
     
     $('#inventory_id').select2({
         placeholder: 'اختر الصنف',
         allowClear: true,
-        width: '100%'
+        width: '100%',
+        language: {
+            noResults: function() {
+                return "لم يتم العثور على نتائج";
+            }
+        }
     });
     
     // Set default values
     $('#transaction_date').val(new Date().toISOString().split('T')[0]);
     $('#quantity').val(1);
     $('#discount').val(0);
+    
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
 }
 
 function setupEventHandlers() {
@@ -38,9 +51,13 @@ function setupEventHandlers() {
         if (transactionType === 'بيع') {
             $('#paymentSection').show();
             $('#payment_status').prop('required', true);
+            // Show payment method field for sales
+            $('#payment_method').parent().parent().show();
         } else {
             $('#paymentSection').hide();
             $('#payment_status').prop('required', false);
+            // Hide payment method field for non-sales
+            $('#payment_method').parent().parent().hide();
         }
         
         // Reset payment fields
@@ -75,6 +92,11 @@ function setupEventHandlers() {
         e.preventDefault();
         submitForm();
     });
+    
+    // Real-time validation
+    $('#uniformTransactionForm input, #uniformTransactionForm select, #uniformTransactionForm textarea').on('blur', function() {
+        validateField($(this));
+    });
 }
 
 function loadMembers() {
@@ -82,6 +104,9 @@ function loadMembers() {
         url: 'include/api/pages/uniforms.php?action=getMembers',
         method: 'GET',
         dataType: 'json',
+        beforeSend: function() {
+            $('#member_id').prop('disabled', true);
+        },
         success: function(response) {
             if (response.success) {
                 const memberSelect = $('#member_id');
@@ -97,6 +122,9 @@ function loadMembers() {
         error: function(xhr, status, error) {
             console.error('Error loading members:', error);
             showAlert('error', 'حدث خطأ في تحميل بيانات المنخرطين');
+        },
+        complete: function() {
+            $('#member_id').prop('disabled', false);
         }
     });
 }
@@ -106,6 +134,9 @@ function loadInventoryItems() {
         url: 'include/api/pages/uniforms.php?action=getInventoryItems',
         method: 'GET',
         dataType: 'json',
+        beforeSend: function() {
+            $('#inventory_id').prop('disabled', true);
+        },
         success: function(response) {
             if (response.success) {
                 const inventorySelect = $('#inventory_id');
@@ -121,6 +152,9 @@ function loadInventoryItems() {
         error: function(xhr, status, error) {
             console.error('Error loading inventory items:', error);
             showAlert('error', 'حدث خطأ في تحميل بيانات المخزون');
+        },
+        complete: function() {
+            $('#inventory_id').prop('disabled', false);
         }
     });
 }
@@ -135,6 +169,11 @@ function loadInventoryDetails(inventoryId) {
             token: $('input[name="token"]').val()
         },
         dataType: 'json',
+        beforeSend: function() {
+            // Show loading indicator
+            $('#stockInfo').html('<i class="fas fa-spinner fa-spin me-2"></i>جاري تحميل تفاصيل الصنف...');
+            $('#inventoryInfo').show();
+        },
         success: function(response) {
             if (response.success) {
                 const item = response.data;
@@ -157,6 +196,7 @@ function loadInventoryDetails(inventoryId) {
                     calculateTotal();
                 }
                 showAlert('error', response.message || 'حدث خطأ في تحميل تفاصيل الصنف');
+                $('#inventoryInfo').hide();
             }
         },
         error: function(xhr, status, error) {
@@ -169,6 +209,7 @@ function loadInventoryDetails(inventoryId) {
                 calculateTotal();
             }
             showAlert('error', 'حدث خطأ في تحميل تفاصيل الصنف');
+            $('#inventoryInfo').hide();
         }
     });
 }
@@ -247,44 +288,15 @@ function submitForm() {
 
 function validateForm() {
     let isValid = true;
-    const requiredFields = [
-        { field: '#transaction_type', message: 'يرجى اختيار نوع المعاملة' },
-        { field: '#member_id', message: 'يرجى اختيار المنخرط' },
-        { field: '#inventory_id', message: 'يرجى اختيار الصنف' },
-        { field: '#quantity', message: 'يرجى إدخال الكمية' },
-        { field: '#unit_price', message: 'يرجى إدخال سعر الوحدة' }
-    ];
     
-    // Clear previous validation states
-    $('.form-control, .form-select').removeClass('is-invalid');
-    
-    // Check required fields
-    requiredFields.forEach(function(item) {
-        const field = $(item.field);
-        if (!field.val() || field.val().trim() === '') {
-            field.addClass('is-invalid');
-            showAlert('error', item.message);
+    // Validate all fields
+    $('#uniformTransactionForm input, #uniformTransactionForm select, #uniformTransactionForm textarea').each(function() {
+        if (!validateField($(this))) {
             isValid = false;
         }
     });
     
-    // Validate quantity
-    const quantity = parseInt($('#quantity').val());
-    if (quantity <= 0) {
-        $('#quantity').addClass('is-invalid');
-        showAlert('error', 'الكمية يجب أن تكون أكبر من الصفر');
-        isValid = false;
-    }
-    
-    // Validate unit price
-    const unitPrice = parseFloat($('#unit_price').val());
-    if (unitPrice < 0) {
-        $('#unit_price').addClass('is-invalid');
-        showAlert('error', 'سعر الوحدة لا يمكن أن يكون سالباً');
-        isValid = false;
-    }
-    
-    // Validate payment for sales transactions
+    // Additional validation for sales transactions
     const transactionType = $('#transaction_type').val();
     if (transactionType === 'بيع') {
         const paymentStatus = $('#payment_status').val();
@@ -307,6 +319,55 @@ function validateForm() {
     return isValid;
 }
 
+function validateField(field) {
+    const fieldName = field.attr('name');
+    const fieldValue = field.val();
+    const isRequired = field.prop('required');
+    
+    // Clear previous validation state
+    field.removeClass('is-invalid is-valid');
+    
+    // Check required fields
+    if (isRequired && (!fieldValue || fieldValue.trim() === '')) {
+        field.addClass('is-invalid');
+        return false;
+    }
+    
+    // Field-specific validation
+    switch (fieldName) {
+        case 'quantity':
+            const quantity = parseInt(fieldValue);
+            if (quantity <= 0) {
+                field.addClass('is-invalid');
+                return false;
+            }
+            break;
+            
+        case 'unit_price':
+            const unitPrice = parseFloat(fieldValue);
+            if (unitPrice < 0) {
+                field.addClass('is-invalid');
+                return false;
+            }
+            break;
+            
+        case 'amount_paid':
+            const amountPaid = parseFloat(fieldValue);
+            if (amountPaid < 0) {
+                field.addClass('is-invalid');
+                return false;
+            }
+            break;
+    }
+    
+    // Add valid class for valid fields
+    if (fieldValue && fieldValue.trim() !== '') {
+        field.addClass('is-valid');
+    }
+    
+    return true;
+}
+
 function resetForm() {
     // Reset form fields
     $('#uniformTransactionForm')[0].reset();
@@ -326,7 +387,10 @@ function resetForm() {
     $('#total_amount').val('');
     
     // Clear validation states
-    $('.form-control, .form-select').removeClass('is-invalid');
+    $('.form-control, .form-select').removeClass('is-invalid is-valid');
+    
+    // Reset payment method visibility
+    $('#payment_method').parent().parent().hide();
 }
 
 function showAlert(type, message) {
@@ -356,14 +420,14 @@ function showAlert(type, message) {
 
 // Utility functions
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('ar-SA', {
+    return new Intl.NumberFormat('ar-DZ', {
         style: 'currency',
-        currency: 'SAR'
+        currency: 'DZD'
     }).format(amount);
 }
 
 function formatDate(date) {
-    return new Date(date).toLocaleDateString('ar-SA');
+    return new Date(date).toLocaleDateString('ar-DZ');
 }
 
 // Handle page unload warning if form has unsaved changes

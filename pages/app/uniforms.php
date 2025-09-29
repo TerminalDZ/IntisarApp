@@ -579,7 +579,7 @@
                         <div class="col-lg-6 col-md-12">
                             <div class="form-group">
                                 <label>تاريخ الدفع</label>
-                                <input type="date" class="form-control" name="payment_date">
+                                <input type="date" class="form-control" name="transaction_date">
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12">
