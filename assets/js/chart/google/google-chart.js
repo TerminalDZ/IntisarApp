@@ -22,7 +22,7 @@ function drawBasic() {
         },
         height: 400,
         width:'100%',
-          colors: ["#7e37d8", "#fe80b2", "#80cf00"]
+          colors: ["#126139", "#fe80b2", "#80cf00"]
 
 
       },
@@ -48,7 +48,7 @@ function drawBasic() {
         },
         height: 400,
         width:'100%',
-        colors: ["#7e37d8", "#fe80b2", "#80cf00"]
+        colors: ["#126139", "#fe80b2", "#80cf00"]
       },
       c = new google.charts.Bar(document.getElementById("column-chart2"));
       c.draw(a, google.charts.Bar.convertOptions(b))
@@ -66,7 +66,7 @@ function drawBasic() {
         title: 'My Daily Activities',
         width:'100%',
         height: 400,
-       colors: ["#06b5dd", "#7e37d8", "#fe80b2", "#80cf00" , "#fd517d"]
+       colors: ["#06b5dd", "#126139", "#fe80b2", "#80cf00" , "#fd517d"]
       };
       var chart = new google.visualization.PieChart(document.getElementById('pie-chart1'));
       chart.draw(data, options);
@@ -85,7 +85,7 @@ function drawBasic() {
         is3D: true,
         width:'100%',
         height: 400,
-        colors: ["#06b5dd", "#7e37d8", "#fe80b2", "#80cf00" , "#fd517d"]
+        colors: ["#06b5dd", "#126139", "#fe80b2", "#80cf00" , "#fd517d"]
       };
       var chart = new google.visualization.PieChart(document.getElementById('pie-chart2'));
       chart.draw(data, options);
@@ -104,7 +104,7 @@ function drawBasic() {
         pieHole: 0.4,
         width:'100%',
         height: 400,
-        colors: ["#06b5dd", "#7e37d8", "#fe80b2", "#80cf00" , "#fd517d"]
+        colors: ["#06b5dd", "#126139", "#fe80b2", "#80cf00" , "#fd517d"]
       };
       var chart = new google.visualization.PieChart(document.getElementById('pie-chart3'));
       chart.draw(data, options);
@@ -147,7 +147,7 @@ function drawBasic() {
           15: {offset: 0.5},
         },
           // colors: ["#ab8ce4", "#26c6da"]
-          colors: ["#06b5dd", "#7e37d8", "#000000", "#06b5dd", "#fe80b2", "#fd517d","#80cf00", "#158df7", "#06b5dd", "#fe80b2", "#7e37d8", "#fd517d","#fd517d", "#fe80b2", "#80cf00", "#06b5dd", "#000000", "#ffc717", "#000000", "#fe80b2","#7e37d8", "#fd517d"]
+          colors: ["#06b5dd", "#126139", "#000000", "#06b5dd", "#fe80b2", "#fd517d","#80cf00", "#158df7", "#06b5dd", "#fe80b2", "#126139", "#fd517d","#fd517d", "#fe80b2", "#80cf00", "#06b5dd", "#000000", "#ffc717", "#000000", "#fe80b2","#126139", "#fd517d"]
         };
         var chart = new google.visualization.PieChart(document.getElementById('pie-chart4'));
         chart.draw(data, options);
@@ -177,7 +177,7 @@ function drawBasic() {
           title: 'Box Office Earnings in First Two Weeks of Opening',
           subtitle: 'in millions of dollars (USD)'
         },
-        colors: ["#7e37d8", "#fd517d", "#80cf00"],
+        colors: ["#126139", "#fd517d", "#80cf00"],
         height: 500,
         width:'100%',
       };
@@ -201,7 +201,7 @@ function drawBasic() {
         series: {5: {type: 'line'}},
         height: 500,
         width:'100%',
-        colors: ["#06b5dd", "#7e37d8", "#fe80b2", "#80cf00", "#fd517d"]
+        colors: ["#06b5dd", "#126139", "#fe80b2", "#80cf00", "#fd517d"]
     };
     var chart = new google.visualization.ComboChart(document.getElementById('combo-chart'));
     chart.draw(data, options);
@@ -220,7 +220,7 @@ function drawBasic() {
         vAxis: {minValue: 0},
         width:'100%',
         height: 400,
-        colors: ['#fd517d', '#7e37d8']
+        colors: ['#fd517d', '#126139']
       };
       var chart = new google.visualization.AreaChart(document.getElementById('area-chart1'));
       chart.draw(data, options);
@@ -239,7 +239,7 @@ function drawBasic() {
       vAxis: {minValue: 0},
       width:'100%',
       height: 400,
-      colors: ["#7e37d8", "#fe80b2", "#fd517d", "#158df7"]
+      colors: ["#126139", "#fe80b2", "#fd517d", "#158df7"]
     };
     var chart = new google.visualization.AreaChart(document.getElementById('area-chart2'));
     chart.draw(data, options);
@@ -283,7 +283,7 @@ function drawBasic() {
                 ["Element", "Density", {
                     role: "style"
                 }],
-                ["Copper", 10, "#7e37d8"],
+                ["Copper", 10, "#126139"],
                 ["Silver", 12, "#fe80b2"],
                 ["Gold", 14, "#80cf00"],
                 ["Platinum", 16, "color: #fd517d"]
@@ -350,15 +350,15 @@ function drawChart() {
             arrow: {
                 angle: 100,
                 width: 5,
-                color: '#7e37d8',
+                color: '#126139',
                 radius: 0
             },
 
                 palette: [
                     {
                         "color": "#fd517d",
-                        "dark": "#7e37d8",
-                        "light": "#7e37d8"
+                        "dark": "#126139",
+                        "light": "#126139"
                     }
                 ]
 

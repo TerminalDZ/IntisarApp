@@ -68,7 +68,7 @@ var morris_chart = {
                 }],
             xkey: "y",
             ykeys: ["a", "b"],
-            lineColors: ["#7e37d8", "#06b5dd"],
+            lineColors: ["#126139", "#06b5dd"],
             labels: ["Series A", "Series B"]
         }), Morris.Bar({
             element: "morris-simple-bar-chart",
@@ -98,7 +98,7 @@ var morris_chart = {
                 }],
             xkey: "x",
             ykeys: ["y", "z", "a"],
-            barColors: ["#7e37d8", "#fe80b2" ,"#80cf00"],
+            barColors: ["#126139", "#fe80b2" ,"#80cf00"],
             labels: ["Y", "Z", "A"]
         }), Morris.Bar({
             element: "bar-line-chart-morris",
@@ -141,7 +141,7 @@ var morris_chart = {
             xkey: "x",
             ykeys: ["y"],
             labels: ["Y"],
-            barColors: ["#7e37d8"]
+            barColors: ["#126139"]
         }), $(function() {
             var b = [{
                 period: "2012-10-01",
@@ -177,7 +177,7 @@ var morris_chart = {
             Morris.Bar({
                 element: 'x-lable-morris-chart',
                 data: b,
-                barColors: ["#06b5dd", "#7e37d8"],
+                barColors: ["#06b5dd", "#126139"],
                 xkey: "period",
                 ykeys: ["licensed", "sorned"],
                 labels: ["Licensed", "SORN"],
@@ -257,7 +257,7 @@ var morris_chart = {
                 element: 'x-Labels-Diagonally-morris-chart',
                 data: b,
                 xkey: "period",
-                lineColors: ["#7e37d8", "#06b5dd"],
+                lineColors: ["#126139", "#06b5dd"],
                 ykeys: ["licensed", "sorned"],
                 labels: ["Licensed", "SORN"],
                 xLabelAngle: 60
@@ -312,7 +312,7 @@ var morris_chart = {
                         ymin: -1,
                         ymax: 1,
                         hideHover: !0,
-                        lineColors: ["#06b5dd", "#7e37d8"],
+                        lineColors: ["#06b5dd", "#126139"],
                     }),
                     h = function() {
                         e++, g.setData(f(5 * e)), $(".reloadStatus").text(e + " reloads")
@@ -373,7 +373,7 @@ var morris_chart = {
                 xkey: "x",
                 ykeys: ["y", "z", "a"],
                 labels: ["A", "Y", "Z"],
-                barColors: ["#7e37d8", "#80cf00" ,"#fe80b2" ,"#ff5a75" ,"#ff9f40", "#1ea6ec" ,"#7e37d8"],
+                barColors: ["#126139", "#80cf00" ,"#fe80b2" ,"#ff5a75" ,"#ff9f40", "#1ea6ec" ,"#126139"],
                 stacked: !0
             });
         });

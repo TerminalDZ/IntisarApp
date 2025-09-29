@@ -272,18 +272,69 @@ class Mail
     public static function send($to, $subject, $body, $htmlFilePath = null, $variables = [])
     {
         $mail = new PHPMailer(true);
+        $settings = Settings::get();
 
         try {
-            $mail->isSMTP();
-            $mail->Host = Settings::get()['smtp_host'];
-            $mail->SMTPAuth = true;
-            $mail->Username = Settings::get()['smtp_email'];
-            $mail->Password = Settings::get()['smtp_password'];
-            $mail->SMTPSecure = Settings::get()['smtp_encryption'];
-            $mail->Port = Settings::get()['smtp_port'];
+            // تحديد نوع الخدمة
+            $serviceType = $settings['smtp_service_type'] ?? 'smtp';
+            
+            if ($serviceType == 'sendmail') {
+                $mail->isSendmail();
+            } else {
+                $mail->isSMTP();
+                $mail->Host = $settings['smtp_host'] ?? 'localhost';
+                
+                // تفعيل أو تعطيل المصادقة
+                $smtpAuth = ($settings['smtp_auth'] ?? '1') == '1';
+                $mail->SMTPAuth = $smtpAuth;
+                
+                if ($smtpAuth) {
+                    $mail->Username = $settings['smtp_email'] ?? null;
+                    $mail->Password = $settings['smtp_password'] ?? null;
+                }
+                
+                // إعداد التشفير
+                $encryption = $settings['smtp_encryption'] ?? '';
+                if (!empty($encryption) && $encryption != 'null') {
+                    if ($encryption == 'starttls') {
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    } elseif ($encryption == 'ssl') {
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    } elseif ($encryption == 'tls') {
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    }
+                }
+                
+                $mail->Port = $settings['smtp_port'] ?? 587;
+                
+                // إعداد مهلة الاتصال
+                $mail->Timeout = $settings['smtp_timeout'] ?? 30;
+                
+                // إعداد التصحيح
+                $debugLevel = $settings['smtp_debug'] ?? '0';
+                $mail->SMTPDebug = (int)$debugLevel;
+                
+                // إعدادات خاصة لـ Mailpit
+                if ($serviceType == 'mailpit') {
+                    $mail->Host = $settings['smtp_host'] ?? 'localhost';
+                    $mail->Port = $settings['smtp_port'] ?? 1025;
+                    $mail->SMTPAuth = false;
+                    $mail->SMTPSecure = false;
+                }
+                
+                // إعدادات خاصة لـ Mailtrap
+                if ($serviceType == 'mailtrap') {
+                    $mail->Host = $settings['smtp_host'] ?? 'smtp.mailtrap.io';
+                    $mail->Port = $settings['smtp_port'] ?? 2525;
+                    $mail->SMTPAuth = true;
+                }
+            }
+            
             $mail->CharSet = 'UTF-8';
-            $mail->setFrom(Settings::get()['smtp_email'], Settings::get()['site_name']);
+            $mail->setFrom($settings['smtp_email'] ?? 'noreply@localhost', $settings['site_name'] ?? 'Website');
             $mail->addAddress($to);
+
+          
 
             $mail->isHTML(true);
             $mail->Subject = $subject;
